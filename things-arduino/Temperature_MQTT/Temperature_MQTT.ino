@@ -109,7 +109,7 @@ void loop() {
   //get temperature data each 10s 
   if (now - lastMsg > 10000) {
     // Get the (raw) value of the temperature sensor.
-    int val = analogRead(pinTemp);
+    int val = analogRead(TEMP_SENSOR);
     // Determine the current resistance of the thermistor based on the sensor value.
     float resistance = (float)(1023-val)*10000/val;
     // Calculate the temperature based on the resistance value.
