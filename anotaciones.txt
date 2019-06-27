@@ -15,3 +15,8 @@ https://www.seeedstudio.com/Grove-PIR-Motion-Sensor.html
 http://wiki.seeedstudio.com/Grove_Base_Shield_for_NodeMCU_V1.0/
 http://wiki.seeedstudio.com/Grove-Temperature_Sensor_V1.2/
 
+
+*********************
+
+Tools > Board > NodeMCU 1.0(ESP-12E Module)
+ 
