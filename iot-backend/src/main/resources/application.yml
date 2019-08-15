@@ -1,0 +1,26 @@
+# Datasource configuration in dev environment
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        default_schema: public
+        ddl-auto: none
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/IOT
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 5
+  #este usuario debe crearse en la página de administración del broker
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: iotbroker
+    password: iotbroker
