@@ -1,27 +1,20 @@
 package co.edu.udea.iot.backend.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "homes")
 public class Home {
 
     @Id
-    @GeneratedValue
-    private Integer id;
     private String name;
     private String status;
 
-    public Integer getId() {
-        return id;
-    }
+    //relationships
+    @OneToMany(mappedBy = "home", fetch = FetchType.LAZY)
+    private Set<Device> devices;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -37,6 +30,14 @@ public class Home {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Set<Device> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
     }
 
     public enum Status {

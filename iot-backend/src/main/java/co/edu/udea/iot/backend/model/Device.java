@@ -1,10 +1,7 @@
 package co.edu.udea.iot.backend.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,19 +9,18 @@ import java.time.LocalDateTime;
 public class Device {
 
     @Id
-    @GeneratedValue
-    private Integer id;
     private String name;
     private String status;
     private LocalDateTime lastUpdated;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "fk_home")
+    private Integer homeCode;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    //relationships
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_home", insertable = false, updatable = false)
+    private Home home;
+
 
     public String getName() {
         return name;
@@ -48,6 +44,22 @@ public class Device {
 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Integer getHomeCode() {
+        return homeCode;
+    }
+
+    public void setHomeCode(Integer homeCode) {
+        this.homeCode = homeCode;
+    }
+
+    public Home getHome() {
+        return home;
+    }
+
+    public void setHome(Home home) {
+        this.home = home;
     }
 
     public enum Status {

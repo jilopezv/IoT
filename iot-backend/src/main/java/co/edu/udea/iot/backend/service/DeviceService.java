@@ -11,11 +11,15 @@ public class DeviceService {
 
     private DeviceRepository deviceRepository;
 
-    public DeviceService(DeviceRepository deviceRepository){
+    public DeviceService(DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
     }
 
-    public List<Device> findAllDevices(){
+    public List<Device> findAllDevices() {
         return deviceRepository.findAll();
+    }
+
+    public void processMessage(String message) {
+        //TODO parse the message and take actions
     }
 }
