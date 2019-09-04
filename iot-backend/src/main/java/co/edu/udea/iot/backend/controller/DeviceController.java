@@ -2,6 +2,7 @@ package co.edu.udea.iot.backend.controller;
 
 import co.edu.udea.iot.backend.model.Device;
 import co.edu.udea.iot.backend.service.DeviceService;
+import co.edu.udea.iot.backend.service.HomeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -17,7 +18,7 @@ import java.util.List;
 public class DeviceController {
 
     @Autowired
-    private DeviceService deviceService;
+    private HomeService homeService;
 
     @ApiOperation(value = "View a list of available devices", response = List.class)
     @ApiResponses(value = {
@@ -28,6 +29,6 @@ public class DeviceController {
     })
     @GetMapping()
     public List<Device> getAllDevices() {
-        return deviceService.findAllDevices();
+        return homeService.findAllDevices();
     }
 }

@@ -14,8 +14,7 @@ public class IotSender {
 
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
-    public void send(String target) {
-        String message = "Hello World!";
+    public void send(String target, byte[] message) {
         this.template.convertAndSend(target, message);
         System.out.println(" [x] Sent '" + message + "'");
     }

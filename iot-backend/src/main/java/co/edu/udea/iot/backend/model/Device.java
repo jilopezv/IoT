@@ -30,12 +30,12 @@ public class Device {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public Status getStatus() {
+        return Status.valueOf(status);
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(Status status) {
+        this.status = status.name();
     }
 
     public LocalDateTime getLastUpdated() {
@@ -63,6 +63,6 @@ public class Device {
     }
 
     public enum Status {
-        OFFLINE, ONLINE;
+        OFFLINE, ON, OFF;
     }
 }

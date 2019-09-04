@@ -24,12 +24,12 @@ public class Home {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public Status getStatus() {
+        return Status.valueOf(status);
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(Status status) {
+        this.status = status.name();
     }
 
     public Set<Device> getDevices() {
