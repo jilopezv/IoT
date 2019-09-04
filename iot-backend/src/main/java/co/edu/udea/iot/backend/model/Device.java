@@ -14,7 +14,7 @@ public class Device {
     private LocalDateTime lastUpdated;
 
     @Column(name = "fk_home")
-    private Integer homeCode;
+    private String homeName;
 
     //relationships
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,12 +46,12 @@ public class Device {
         this.lastUpdated = lastUpdated;
     }
 
-    public Integer getHomeCode() {
-        return homeCode;
+    public String getHomeName() {
+        return homeName;
     }
 
-    public void setHomeCode(Integer homeCode) {
-        this.homeCode = homeCode;
+    public void setHomeName(Integer homeCode) {
+        this.homeName = homeName;
     }
 
     public Home getHome() {
