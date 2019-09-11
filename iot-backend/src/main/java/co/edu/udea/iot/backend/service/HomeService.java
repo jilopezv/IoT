@@ -34,14 +34,14 @@ public class HomeService {
         return homeRepository.findAll();
     }
 
-    public void sendMessage(String homeName, List<Message> messages){
+    public void sendMessage(String homeName, List<Message> messages) {
         //TODO query homerepository to verify whether or not the home exists
 
         //TODO query devicerepository to verify devices existence
 
         StringBuilder sb = new StringBuilder();
-        messages.forEach(message ->sb.append(message.getDeviceName()).append(",").append(message.getStatus()));
-        iotSender.send(homeName+"_inbound", sb.toString().getBytes());
+        messages.forEach(message -> sb.append(message.getDeviceName()).append(",").append(message.getStatus()));
+        iotSender.send(homeName + "_inbound", sb.toString().getBytes());
     }
 
 
