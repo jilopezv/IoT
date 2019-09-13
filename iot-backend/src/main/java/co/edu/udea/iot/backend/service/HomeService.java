@@ -26,8 +26,6 @@ public class HomeService {
         this.iotSender = iotSender;
         this.homeRepository = homeRepository;
         this.deviceRepository = deviceRepository;
-
-        sendMessage("home_1", Arrays.asList(new Message("device_1", "HELLO WORLD")));
     }
 
     public List<Home> findAllHomes() {
@@ -36,11 +34,23 @@ public class HomeService {
 
     public void sendMessage(String homeName, List<Message> messages) {
         //TODO query homerepository to verify whether or not the home exists
+        Optional<Home> homeOptional = homeRepository.findByName(homeName);
+
+        if (!homeOptional.isPresent()) {
+            System.err.println("A MESSAGE TO AN UNKNOWN HOME HAS BEEN RECEIVED {" + homeName + "}");
+            return;
+        }
+        Home home = homeOptional.get();
+
+        if (Home.Status.OFFLINE.equals(home.getStatus())) {
+            System.err.println("HOME IS OFFLINE (CANNOT RECEIVE MESSAGES) {" + homeName + "}");
+            return;
+        }
 
         //TODO query devicerepository to verify devices existence
 
         StringBuilder sb = new StringBuilder();
-        messages.forEach(message -> sb.append(message.getDeviceName()).append(",").append(message.getStatus()));
+        messages.forEach(message -> sb.append(message.getDeviceName()).append(",").append(message.getPayload()));
         iotSender.send(homeName + "_inbound", sb.toString().getBytes());
     }
 
@@ -56,7 +66,7 @@ public class HomeService {
         // searching for the home in the db
         Optional<Home> homeOptional = homeRepository.findByName(homeName);
         if (!homeOptional.isPresent()) {
-            System.err.println("A MESSAGE FROM A UNKNOWN HOME HAS BEEN RECEIVED {" + homeName + "}");
+            System.err.println("A MESSAGE FROM AN UNKNOWN HOME HAS BEEN RECEIVED {" + homeName + "}");
             return;
         }
         Home home = homeOptional.get();
@@ -91,5 +101,10 @@ public class HomeService {
 
     public List<Device> findAllDevices() {
         return deviceRepository.findAll();
+    }
+
+    public void sendMessage(String homeName, String deviceName, String payload) {
+        Message message = new Message(deviceName, payload);
+        this.sendMessage(homeName, Arrays.asList(message));
     }
 }

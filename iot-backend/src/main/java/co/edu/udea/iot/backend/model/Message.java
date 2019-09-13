@@ -2,11 +2,11 @@ package co.edu.udea.iot.backend.model;
 
 public class Message {
     private String deviceName;
-    private String status;
+    private String payload;
 
-    public Message(String deviceName, String status) {
+    public Message(String deviceName, String payload) {
         this.deviceName = deviceName;
-        this.status = status;
+        this.payload = payload;
     }
 
     public String getDeviceName() {
@@ -17,11 +17,11 @@ public class Message {
         this.deviceName = deviceName;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPayload() {
+        return payload;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 }
