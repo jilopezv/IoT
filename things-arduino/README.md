@@ -42,7 +42,7 @@ Los elementos 3 y 4 vienen en el Grove - [Starter Kit V2.0](https://seeeddoc.git
 
 **Nota**: Antes de programar el nodeMCU no olvidar editar los campos relacionados con la red inalambrica (ssid) su password (password) y la IP donde se encuentra el broker en ejecución (mqtt_server). Ver el fragmendo de código a continuacion.
 
-```C
+```C++
 //SENSOR MOVIMIENTO
 ...
 // Update these with values suitable for your network.
@@ -61,6 +61,16 @@ const char* mqtt_server = "IP_MQTT_SERVER"; // Cambiar
 
 
 **Nota**: Antes de programar el nodeMCU no olvidar editar los campos relacionados con la red inalambrica (ssid) su password (password) y la IP donde se encuentra el broker en ejecución (mqtt_server). Ver el fragmendo de código a continuacion.
+
+
+```C
+//SENSOR MOVIMIENTO
+...
+// Update these with values suitable for your network.
+const char* ssid = "SSID_NAME";  // Cambiar
+const char* password ="SSID_PASS"; // Cambiar
+const char* mqtt_server = "IP_MQTT_SERVER"; // Cambiar
+```
 
 ## Prueba de funcionamiento ##
 
