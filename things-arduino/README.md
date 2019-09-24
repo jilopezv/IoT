@@ -38,7 +38,7 @@ Los elementos 3 y 4 vienen en el Grove - [Starter Kit V2.0](https://seeeddoc.git
 1. NodeMCU
 2. Sensor PIR
 
-**Codigo**: [PIR_MQTT.ino](./SmartThings/PIR_MQTT/PIR_MQTT.ino)
+**Codigo**: [PIR_MQTT.ino](./PIR_MQTT/PIR_MQTT.ino)
 
 **Nota**: Antes de programar el nodeMCU no olvidar editar los campos relacionados con la red inalambrica (ssid) su password (password) y la IP donde se encuentra el broker en ejecución (mqtt_server). Ver el fragmendo de código a continuacion.
 
@@ -57,7 +57,7 @@ const char* mqtt_server = "IP_MQTT_SERVER"; // Cambiar
 1. NodeMCU
 2. Sensor de temperatura
 
-**Codigo**: [Temperature_MQTT.ino](./SmartThings/Temperature_MQTT/Temperature_MQTT.ino)
+**Codigo**: [Temperature_MQTT.ino](./Temperature_MQTT/Temperature_MQTT.ino)
 
 
 **Nota**: Antes de programar el nodeMCU no olvidar editar los campos relacionados con la red inalambrica (ssid) su password (password) y la IP donde se encuentra el broker en ejecución (mqtt_server). Ver el fragmendo de código a continuacion.
