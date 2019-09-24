@@ -78,3 +78,38 @@ Usando los clientes del mosquito verifique que hay comuniciación entre los dife
 
 ## Enlaces de utilidad ##
 1. http://wiki.seeedstudio.com/Sidekick_Basic_Kit_for_Arduino_V2/
+
+<!---
+https://github.com/roppert/mosquitto-python-example
+https://jpmens.net/2013/02/25/lots-of-messages-mqtt-pub-sub-and-the-mosquitto-broker/
+https://github.com/FarmBot-Labs/FarmBot-Python-Examples
+https://github.com/rb28z2/python-mqtt-nvr
+https://github.com/larsx2/mqtt-examples/blob/master/pubsub-client.py
+
+https://github.com/octopusengine/octopusLAB_mqtt
+
+https://github.com/EDULISES/mqttPython/tree/master/Python
+
+https://github.com/stoefln/MqttToPd
+
+https://github.com/wedoiot/mqttGPIO/blob/master/MQTTPythonClient.py
+
+https://elementztechblog.wordpress.com/2016/07/18/arduino-mqtt-library-for-sim800-gsm-modem/
+
+https://github.com/richardFirth/PythonMQTT
+
+https://github.com/caghankoksal/mqttExample **
+
+https://github.com/cnsval/MQTT_RaspberryPi_GPIO/blob/master/MQTT_Test.py ****
+
+https://github.com/ashiqks/MQTT-with-Python ******
+
+https://github.com/iotJumpway/RPI-Examples **********
+
+https://github.com/wirepas/backend-client
+
+https://github.com/agnsal/speechMqtt ******************************
+
+https://github.com/rangertaha/messaging-patterns ----- (muy bueno)
+
+-->
