@@ -64,12 +64,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     open(content) {
         this.sendMessage('start_streaming');
+        this.sleep(3000).then(() => {
+            //do stuff
+          })
         this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.sendMessage('stop_streaming');
         }, (reason) => {
            this.sendMessage('stop_streaming');
         });
     }
+
+  sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds))
+      }
 
     evaluarColor(state: number) {
         switch (state) {
@@ -187,7 +194,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
 
         // Stream of messages
-        this.messages = this._stompService.subscribe('/topic/home_1_0');
+        this.messages = this._stompService.subscribe('/topic/home_out');
 
         // Subscribe a function to be run on_next message
         this.subscription = this.messages.subscribe(this.on_next);
@@ -215,7 +222,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     public sendMessage(message: string) {
         console.log('sending: ' + message);
-        this._stompService.publish('/topic/home_1_1', message);
+        this._stompService.publish('/topic/home_in', message);
     }
 
     /** Consume a message from the _stompService */
