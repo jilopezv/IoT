@@ -13,7 +13,7 @@
 const char* ssid = "Nett1"; 
 const char* password ="zvwq1218"; 
 // MQTT server ip address
-const char* mqtt_server = "192.168.43.225";
+const char* mqtt_server = "192.168.43.87";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
