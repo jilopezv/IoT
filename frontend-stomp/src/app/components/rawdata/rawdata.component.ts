@@ -43,7 +43,7 @@ export class RawDataComponent implements OnInit, OnDestroy {
     }
 
     // Stream of messages
-    this.messages = this._stompService.subscribe('/topic/home_1_0');
+    this.messages = this._stompService.subscribe('/topic/home_out');
 
     // Subscribe a function to be run on_next message
     this.subscription = this.messages.subscribe(this.on_next);
@@ -73,7 +73,7 @@ export class RawDataComponent implements OnInit, OnDestroy {
     const _getRandomInt = (min, max) => {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
-    this._stompService.publish('/topic/home_1_1',
+    this._stompService.publish('/topic/home_in',
       `{ type: "Test Message", data: [ ${this._counter}, ${_getRandomInt(1, 100)}, ${_getRandomInt(1, 100)}] }`);
 
     this._counter++;
