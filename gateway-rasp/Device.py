@@ -4,12 +4,12 @@ from abc import ABC, abstractmethod
 
 class Device(ABC):
     """ Class Device
-        
         Attributes:    
     """
     home = Home
+    topic_prefix = ""
 
-    def __init__(self, id, status, connectionStatus, name, home):
+    def __init__(self, id, status, connectionStatus, name, home, topic_prefix):
         self.id = id
         self.status = status
         self.connectionStatus = connectionStatus
@@ -39,8 +39,10 @@ class Device(ABC):
 
 
 class Light(Device):
+    topic_prefix = "light"
+
     def __init__(self, id, status, connectionStatus, name, home):
-        super().__init__(id, status, connectionStatus, name, home)
+        super().__init__(id, status, connectionStatus, name, home, self.topic_prefix)
 
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
@@ -62,6 +64,11 @@ class Light(Device):
 
 
 class Camera(Device):
+    topic_prefix = "camera"
+
+    def __init__(self, id, status, connectionStatus, name, home):
+        super().__init__(id, status, connectionStatus, name, home, self.topic_prefix)
+
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 
@@ -75,6 +82,11 @@ class Camera(Device):
 
 
 class Temperature(Device):
+    topic_prefix = "temp"
+
+    def __init__(self, id, status, connectionStatus, name, home):
+        super().__init__(id, status, connectionStatus, name, home, self.topic_prefix)
+
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 
@@ -92,6 +104,11 @@ class Temperature(Device):
 
 
 class Movement(Device):
+    topic_prefix = "move"
+
+    def __init__(self, id, status, connectionStatus, name, home):
+        super().__init__(id, status, connectionStatus, name, home, self.topic_prefix)
+
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 

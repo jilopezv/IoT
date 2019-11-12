@@ -1,6 +1,7 @@
 # import ExternalComm
 # import InternalComm
 from Device import *
+import subprocess
 
 
 class Home:
@@ -12,6 +13,7 @@ class Home:
             flag: used to signal the program termination
             light: state of one of the lights at home. TRUE = on - FALSE = off
     """
+    topic_prefix = "home"
 
     def __init__(self):
         """ home constructor
@@ -21,7 +23,6 @@ class Home:
         self.lookout = False
         self.light = False
         self.flag = True
-
         self.devices = {}
         self.devices = self.get_devices()
 
@@ -48,11 +49,43 @@ class Home:
         source_device.process_internal_msg(payload)
 
     def send_msg_2_server(self, msg):
-        #TODO: send message to server
+        # TODO: send message to server
+        raise NotImplementedError
+
+    def process_msg_from_server(self, msg):
+
+        # TODO: extract msg_type: home, room or device
+        # home e.g.: lookout_mode, turnoff all (generic messages) wildcards
+        # device e.g.: to an specific device
+
+        # TODO: Extract target
+        # Room_type, Room_id, Device_type, Device_id
+        # TODO: Define payload format
+        # Depends on device type
+
+
+        source_device = self.devices.get(id, "invalid")
+        if source_device == "invalid":
+            # TODO: Notify server that gateway receives msg from unknown device
+            raise AssertionError
+
+        if msg == "start_streaming":
+            print("starting streaming...")
+            if not self.get_light():
+                self.toggle_light()
+            self.process = subprocess.Popen(['python3', 'streaming.py'])  # create streaming process
+        elif msg == "stop_streaming":
+            print("stop streaming...")
+            self.process.kill()  # Kill streaming process
+            if self.get_light():
+                self.toggle_light()
+        elif msg == "light":
+            print("ext: must toggle light")
+            self.toggle_light()
         raise NotImplementedError
 
     def send_alive_msg(self, msg):
-        #TODO: send alive message to server
+        # TODO: send alive message to server
         raise NotImplementedError
 
     def toggle_lookout(self):

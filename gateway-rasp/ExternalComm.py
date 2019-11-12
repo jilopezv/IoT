@@ -1,13 +1,12 @@
 import paho.mqtt.client as mqttc
 import paho.mqtt.publish as publish
 import Home
-import subprocess
 
 # Change this parameter with the address and the credentials to your remote server
 MQTT_REMOTE_SERVER = "localhost"  # Test server on local
 # MQTT_REMOTE_SERVER = "192.168.43.103"  # Remote server IP address
-MQTT_PATH_SEND = "home_1_0"  # topic to publish messages
-MQTT_PATH_RECV = "home_1_1"  # topic to subscribe
+MQTT_PATH_SEND = "home_outbound"  # topic to publish messages
+MQTT_PATH_RECV = "home_1_inbound"  # topic to subscribe
 USR = "danny"  # user
 PASS = "danny"  # password
 
@@ -66,22 +65,14 @@ class ExternalComm:
         self.client.loop_forever()
 
     def on_message(self, client, userdata, msg):
+
+        # Recibir mensaje, convertirlo o procesarlo y luego pasárselo a home
+        # validar credenciales
         print("ExternalComm: got a message")
         print("%s %s" % (msg.topic, msg.payload))
         info = msg.payload.decode("ascii")  # msg.payload is a binary string
-        if info == "start_streaming":
-            print("starting streaming...")
-            if not self.myhome.get_light():
-                self.myhome.toggle_light()
-            self.process = subprocess.Popen(['python3', 'streaming.py'])  # create streaming process
-        elif info == "stop_streaming":
-            print("stop streaming...")
-            self.process.kill()  # Kill streaming process
-            if self.myhome.get_light():
-                self.myhome.toggle_light()
-        elif info == "light":
-            print("ext: must toggle light")
-            self.myHome.toggle_light()
+        self.myHome.process_msg_from_server(info)
+
 
     def on_connect(self, client, userdata, flags, rc):
         print("External Comm: connected with result code " + str(rc))
