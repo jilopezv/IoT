@@ -24,6 +24,15 @@ class Device(ABC):
 
     # TODO: refactor this method. opt1: create a concrete method with current implementation
     def process_internal_msg(self, parameter_list):
+        self._process_internal_msg_on_device(parameter_list)
+        self.eval_status_to_report()
+        pass
+
+    @abstractmethod
+    def _process_internal_msg_on_device(self, parameter_list):
+        pass
+
+    def eval_status_to_report(self):
         self.msg_count += 1
         # TODO: change explicit number 5 to a constant variable
         if self.msg_count == 5:
@@ -47,12 +56,11 @@ class Light(Device):
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 
-    def process_internal_msg(self, payload):
+    def _process_internal_msg_on_device(self, payload):
         print(payload)
         if payload != "ONLINE":
             self.toggle_light()
             self.clean_count()
-        super().process_internal_msg()
 
     # raise NotImplementedError
     def toggle_light(self):
@@ -72,14 +80,12 @@ class Camera(Device):
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 
-    def process_internal_msg(self, payload):
+    def _process_internal_msg_on_device(self, payload):
         print(payload)
         if self.status != payload:
             self.status = payload
             self.home.send_msg_2_server(payload)
             self.clean_count()
-        super().process_internal_msg()
-
 
 class Temperature(Device):
     topic_prefix = "temp"
@@ -90,7 +96,7 @@ class Temperature(Device):
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 
-    def process_internal_msg(self, payload):
+    def _process_internal_msg_on_device(self, payload):
         print(payload)
         changed_state = True
         # TODO: extract streaming state from payload
@@ -100,7 +106,6 @@ class Temperature(Device):
         if changed_state:
             self.home.send_msg_2_server(payload)
             self.clean_count()
-        super().process_internal_msg()
 
 
 class Movement(Device):
@@ -112,11 +117,10 @@ class Movement(Device):
     def process_external_msg(self, parameter_list):
         raise NotImplementedError
 
-    def process_internal_msg(self, parameter_list):
+    def _process_internal_msg_on_device(self, parameter_list):
         if self.home.lookout:
             self.home.send_msg_2_server()
             self.clean_count()
         else:
             # TODO: evaluate further actions regarding home functionality (for next versions: rooms, auto mode)
             pass
-        super().process_internal_msg(parameter_list)
