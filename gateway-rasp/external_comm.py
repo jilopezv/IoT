@@ -24,22 +24,7 @@ class ExternalComm:
         self.myHome = home
         print("connected")
 
-    @staticmethod
-    def send_tmp(tmp):
-        try:
-            publish.single(MQTT_PATH_SEND, "tmp:" + tmp, hostname=MQTT_REMOTE_SERVER,
-                           auth={'username': USR, 'password': PASS})
-        except Exception as ex:
-            print("Error in send_tmp(). ex: {}".format(ex))
-        # TODO: store tmp value and send it later
 
-    @staticmethod
-    def send_alarm():
-        try:
-            publish.single(MQTT_PATH_SEND, "alarm", hostname=MQTT_REMOTE_SERVER,
-                           auth={'username': USR, 'password': PASS})
-        except Exception as ex:
-            print("Error in send_alarm(). ex: {}".format(ex))
 
     @staticmethod
     def send_status(st):
@@ -49,16 +34,6 @@ class ExternalComm:
         except Exception as ex:
             print("Error in send_status(). ex: {}".format(ex))
 
-    @staticmethod
-    def send_light(st):
-        try:
-            publish.single(MQTT_PATH_SEND, "light:" + st, hostname=MQTT_REMOTE_SERVER,
-                           auth={'username': USR, 'password': PASS})
-        except Exception as ex:
-            print("Error in send_status(). ex: {}".format(ex))
-
-    def toggle_light(self):
-        self.myHome.toggle_light()
 
     def start(self):
         print("looping ...")

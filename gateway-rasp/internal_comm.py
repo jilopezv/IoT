@@ -1,9 +1,9 @@
 import paho.mqtt.client as mqttc
 import paho.mqtt.publish as publish
-from ExternalComm import ExternalComm
+import Home
 
 MQTT_LOCAL_SERVER = "localhost"  # Address of local MQTT server (must be always localhost)
-MQTT_PATH = "casa"  # Topic to establish communication with 'Things' at home
+MQTT_PATH = "home"  # Topic to establish communication with 'Things' at home
 
 
 class ThingsComm:
@@ -14,22 +14,31 @@ class ThingsComm:
             client : paho.mqtt.client
                 MQTT client
         """
-    def __init__(self):
+    def __init__(self, home):
         print("Hello")
         self.client = mqttc.Client()
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.connect(MQTT_LOCAL_SERVER, 1883, 60)
         print("connected")
+        assert isinstance(home, Home.Home)
+        self.myHome = home
 
     def start(self):
         print("Looping")
         self.client.loop_forever()
 
-    @staticmethod
+    '''@staticmethod
     def send_conf(subtopic, conf):
         try:
             publish.single(MQTT_PATH+"/"+subtopic, "conf:" + conf, hostname=MQTT_LOCAL_SERVER)
+        except Exception as ex:
+            print("Error in send_conf(). ex: {}".format(ex))'''
+
+    @staticmethod
+    def send_message(topic, payload):
+        try:
+            publish.single(topic, payload, hostname = MQTT_LOCAL_SERVER)
         except Exception as ex:
             print("Error in send_conf(). ex: {}".format(ex))
 
@@ -39,11 +48,4 @@ class ThingsComm:
 
     def on_message(self, client, userdata, msg):
         print("InternalComm got a message")
-        print('%s %s' % (msg.topic, msg.payload))
-        if msg.topic == "casa/tmp":
-            print("tmp")
-            ExternalComm.send_tmp(msg.payload.decode("ascii"))
-        elif msg.topic == "casa/pir":
-            ExternalComm.send_alarm()
-            print("pir - alarm")
-
+        self.myHome.process_msg_from_device(msg)

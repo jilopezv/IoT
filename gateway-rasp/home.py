@@ -1,9 +1,9 @@
-# import ExternalComm
-# import InternalComm
-from Device import *
+from .external_comm import ExternalComm
+from .internal_comm import ThingsComm
+from .device import *
 import subprocess
 
-
+# TODO: analyze which methods must be synchronized
 class Home:
     """ Class Home
         Home represents the smart home basic functionality
@@ -14,6 +14,7 @@ class Home:
             light: state of one of the lights at home. TRUE = on - FALSE = off
     """
     topic_prefix = "home"
+    devices = []
 
     def __init__(self):
         """ home constructor
@@ -41,19 +42,29 @@ class Home:
         }
         return devices
 
-    def process_msg_from_device(self, id, payload):
-        source_device = self.devices.get(id, "invalid")
-        if source_device == "invalid":
+    def process_msg_from_device(self, payload):
+        info = self.parse_payload(payload)
+        source_device = self.devices.get(info[0], None)
+        if source_device is None:
             # TODO: Notify server that gateway receives msg from unknown device
             raise AssertionError
         source_device.process_internal_msg(payload)
 
-    def send_msg_2_server(self, msg):
+    def send_msg_to_server(self, msg):
         # TODO: send message to server
         raise NotImplementedError
 
-    def process_msg_from_server(self, msg):
+    def send_msg_to_device(self, dev_id, message):
+        target_device = self.devices.get(dev_id, None)
+        if target_device is None:
+            # TODO: Notify caller that device id is not found
+            raise AssertionError
+        if target_device.connectionStatus == "ONLINE":
+            # TODO: check with target_device whether message is valid or not
+            ThingsComm.send_message(f"home/+/{target_device.get_topic()}", message)
+        
 
+    def process_msg_from_server(self, msg):
         # TODO: extract msg_type: home, room or device
         # home e.g.: lookout_mode, turnoff all (generic messages) wildcards
         # device e.g.: to an specific device
@@ -62,7 +73,6 @@ class Home:
         # Room_type, Room_id, Device_type, Device_id
         # TODO: Define payload format
         # Depends on device type
-
 
         source_device = self.devices.get(id, "invalid")
         if source_device == "invalid":
@@ -145,6 +155,13 @@ class Home:
             When False program must finish
         """
         return self.flag
+
+
+    def parse_payload(self, payload):
+        info = payload.split(",")
+        # TODO: check whether the list the right size (must be 2)
+        return info
+
 
 
 home = Home()

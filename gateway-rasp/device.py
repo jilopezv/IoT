@@ -1,4 +1,4 @@
-import Home
+from .home import Home
 from abc import ABC, abstractmethod
 
 
@@ -18,18 +18,33 @@ class Device(ABC):
         self.msg_count = 0
         super().__init__()
 
+    ''' process_external_msg
+        process a message incoming from a external component (GUI or Sever)
+    '''
+
     @abstractmethod
-    def process_external_msg(self, parameter_list):
+    def process_external_msg(self, message):
         pass
 
     # TODO: refactor this method. opt1: create a concrete method with current implementation
-    def process_internal_msg(self, parameter_list):
-        self._process_internal_msg_on_device(parameter_list)
+    ''' process_internal_msg
+        process a message incoming from a physical device
+    '''
+
+    def process_internal_msg(self, payload):
+        self.connectionStatus = "ONLINE"
+        # TODO: create mechanism to set connectionStatus to "OFFLINE"
+        #  when no message has been received during a given time
+        self._process_internal_msg_on_device(payload)
         self.eval_status_to_report()
         pass
 
     @abstractmethod
     def _process_internal_msg_on_device(self, parameter_list):
+        pass
+
+    @abstractmethod
+    def get_topic(self):
         pass
 
     def eval_status_to_report(self):
@@ -53,22 +68,29 @@ class Light(Device):
     def __init__(self, id, status, connectionStatus, name, home):
         super().__init__(id, status, connectionStatus, name, home, self.topic_prefix)
 
-    def process_external_msg(self, parameter_list):
-        raise NotImplementedError
+    def process_external_msg(self, message):
+        print(message)
+        if self.connectionStatus == "ONLINE":
+            if message == "TOGGLE":
+                pass
+            else:
+                # TODO: send error message "invalid message"
+                raise NotImplementedError
+        else:
+            # TODO: send error message "offline device"
+            raise NotImplementedError
 
     def _process_internal_msg_on_device(self, payload):
         print(payload)
         if payload != "ONLINE":
-            self.toggle_light()
-            self.clean_count()
+            if self.status != payload:
+                self.status = payload
+                self.home.send_msg_to_server(self.status)
+                self.clean_count()
 
-    # raise NotImplementedError
-    def toggle_light(self):
-        if self.status == "ON":
-            self.status = "OFF"
-        else:
-            self.status = "ON"
-        self.home.send_msg_2_server(self.status)
+
+    def get_topic(self):
+        return f"Light/{self.id}"
 
 
 class Camera(Device):
@@ -84,8 +106,12 @@ class Camera(Device):
         print(payload)
         if self.status != payload:
             self.status = payload
-            self.home.send_msg_2_server(payload)
+            self.home.send_msg_to_server(payload)
             self.clean_count()
+
+    def get_topic(self):
+        return f"Camera/{self.id}"
+
 
 class Temperature(Device):
     topic_prefix = "temp"
@@ -104,9 +130,11 @@ class Temperature(Device):
         # if change then home should send data
         # raise NotImplementedError
         if changed_state:
-            self.home.send_msg_2_server(payload)
+            self.home.send_msg_to_server(payload)
             self.clean_count()
 
+    def get_topic(self):
+        return f"Temperature/{self.id}"
 
 class Movement(Device):
     topic_prefix = "move"
@@ -119,8 +147,11 @@ class Movement(Device):
 
     def _process_internal_msg_on_device(self, parameter_list):
         if self.home.lookout:
-            self.home.send_msg_2_server()
+            self.home.send_msg_to_server()
             self.clean_count()
         else:
             # TODO: evaluate further actions regarding home functionality (for next versions: rooms, auto mode)
             pass
+
+    def get_topic(self):
+        return f"Movemente/{self.id}"
