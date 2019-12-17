@@ -2,7 +2,7 @@
 
 ## Prerequisitos ##
 
-### Instalacion del broker ###
+### Instalación del broker ###
 
 ```bash
 sudo apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
@@ -27,7 +27,7 @@ sudo pip3 install paho-mqtt
 
 Si los prerequisitos se cumplen puede ir directamente a la instalación de la aplicación.
 
-## Ejecucución de la aplicación ##
+## Ejecución de la aplicación ##
 
 #### Comando python ####
 
@@ -39,8 +39,10 @@ python3 main.py
 
 ![rasp](gateway_raspberry.jpg)
 
-## Debug (opcional) ##
+## Pruebas funcionales ##
 
-Para propositos de debug se puede hacer uso de los comandos de mosquitto o de algun otro cliente para debug ya sea local o remoto. La siguiente pantalla muestra un debug que se llevo a cabo para verificar que la conexión entre los arduinos y la rPi se estaba dando.
+Para probar la aplicación se puede hacer uso de los comandos de mosquitto o de algún otro cliente mqtt, ya sea local o 
+remoto. La siguiente pantalla muestra una prueba que se llevó a cabo para verificar que la conexión entre los arduinos 
+y la rPi se estaba dando.
 
 ![debug](debug_con_mosquitto.jpg)
