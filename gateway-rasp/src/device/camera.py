@@ -4,8 +4,8 @@ from device.base import device
 class Camera(device.Device):
     topic_prefix = "camera"
 
-    def __init__(self, id, status, connectionStatus, name, home):
-        super().__init__(id, status, connectionStatus, name, home, self.topic_prefix)
+    def __init__(self, id, state, connectionState, name, home):
+        super().__init__(id, state, connectionState, name, home, self.topic_prefix)
 
     def process_external_msg(self, parameter_list):
         raise NotImplementedError

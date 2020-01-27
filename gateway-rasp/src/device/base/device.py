@@ -1,5 +1,6 @@
-import home
 from abc import ABC, abstractmethod
+
+import home
 
 
 # from things_comm.things_outbound import send_message
@@ -9,11 +10,14 @@ class Device(ABC):
         Attributes:    
     """
     topic_prefix = ""
+    ONLINE_STATE = "100"
+    OFFLINE_STATE = "-100"
+    UNKNOWN = "-1"
 
-    def __init__(self, id, status, connectionStatus, name, ref_home, topic_prefix):
+    def __init__(self, id, state, connectionState, name, ref_home, topic_prefix):
         self.id = id
-        self.status = status
-        self.connectionStatus = connectionStatus
+        self.state = state
+        self.connectionState = connectionState
         self.name = name
         assert isinstance(ref_home, home.Home)
         self.my_home = ref_home
@@ -34,11 +38,12 @@ class Device(ABC):
     '''
 
     def process_internal_msg(self, payload):
-        self.connectionStatus = "ONLINE"
-        # TODO: create mechanism to set connectionStatus to "OFFLINE"
+        print(payload)
+        self.connectionState = self.ONLINE_STATE
+        # TODO: create mechanism to set connectionState to "OFFLINE"
         #  when no message has been received during a given time
         self._process_internal_msg_on_device(payload)
-        self.eval_status_to_report()
+        self.eval_state_to_report()
         pass
 
     @abstractmethod
@@ -49,7 +54,7 @@ class Device(ABC):
     def get_topic(self):
         pass
 
-    def eval_status_to_report(self):
+    def eval_state_to_report(self):
         self.msg_count += 1
         # TODO: change explicit number 5 to a constant variable
         if self.msg_count == 5:

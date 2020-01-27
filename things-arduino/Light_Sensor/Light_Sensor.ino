@@ -16,16 +16,19 @@
 const int B = 3975;
 
 #define BUILTIN_LED 2
+#define MAX_BUFFER 100
 
 // Wifi network credentials
 const char* ssid = "Nett1";
 const char* password = "zvwq1218";
 // MQTT server ip address
-const char* mqtt_server = "192.168.43.225";
+const char* mqtt_server = "192.168.43.146";
 
 // Topics
 const char* DEVICE_TYPE = "Light";
 const char* DEVICE_ID = "0";
+char msg_buffer[MAX_BUFFER];
+
 
 
 WiFiClient espClient;
@@ -97,11 +100,13 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void turnoff_led(){
   digitalWrite(BUILTIN_LED, HIGH);   // Turn the LED off
   light_state = 0;
+  notify_home("0");
 }
 
 void turnon_led(){
   digitalWrite(BUILTIN_LED, LOW);   // Turn the LED off
   light_state = 1;
+  notify_home("1");
 }
 
 
@@ -113,11 +118,11 @@ void reconnect() {
     // Attempt to connect ESP8266Client1
     if (client.connect("ESP8266Client1")) {
       Serial.println("connected");
-      // Subscribe to "casa/light" topic
-      // client.subscribe("casa/light");
-      char topic[100];
+      // Subscribe to topic
+      char topic[MAX_BUFFER];
       sprintf(topic,"%s/%s", DEVICE_TYPE, DEVICE_ID);
       client.subscribe(topic);
+      //notify_home("100");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -133,21 +138,18 @@ void loop() {
     reconnect();
   }
   client.loop();
-
   long now = millis();
-  //get temperature data each 10s 
-  if (now - lastMsg > 10000) {
-    // Get the (raw) value of the temperature sensor.
-    int val = analogRead(TEMP_SENSOR);
-    // Determine the current resistance of the thermistor based on the sensor value.
-    float resistance = (float)(1023-val)*10000/val;
-    // Calculate the temperature based on the resistance value.
-    float temperature = 1/(log(resistance/10000)/B+1/298.15)-273.15;
+  //get temperature data each 5s 
+  if (now - lastMsg > 5000) {
+    // Light device send 100 value to specify its online state
+    notify_home("100");
     lastMsg = now;
-    //++value;
-    snprintf (msg, 75, "%.2f", temperature);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish("casa/tmp", msg);
   }
+}
+
+void notify_home(char* msg){
+  Serial.print("Publish message:");
+  Serial.println(msg);
+  sprintf(msg_buffer, "%s,%s", DEVICE_ID, msg);
+  client.publish("home", msg_buffer);
 }

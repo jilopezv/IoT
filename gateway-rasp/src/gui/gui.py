@@ -64,11 +64,12 @@ class GUI:
         Callback for the 'On/off' button
         Call the toggle_light method in Home class to change light state
         """
-        self.light = self.myHome.toggle_light()
-        if self.light:
-            self.lightButton.configure(bg='yellow')
-        else:
-            self.lightButton.configure(bg='ghost white')
+        self.myHome.send_msg_to_device("0", "2")
+        #self.light = self.myHome.toggle_light()
+        #if self.light:
+        #    self.lightButton.configure(bg='yellow')
+        #else:
+        #    self.lightButton.configure(bg='ghost white')
 
     def exit(self):
         self.win.destroy()

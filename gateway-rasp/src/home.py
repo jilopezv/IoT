@@ -1,10 +1,12 @@
 import subprocess
 from device import movement, light, temperature, camera
+from device.base import device
 from server_comm.server_outbound import send_status as server_send
-from things_comm.things_outbound import send_message as things_send
-
-
 # TODO: analyze which methods must be synchronized
+from things_comm import things_outbound
+import paho.mqtt.publish as publish
+
+
 class Home:
     """ Class Home
         Home represents the smart home basic functionality
@@ -31,25 +33,26 @@ class Home:
     def get_devices(self):
         # This structure simulates the initial configuration obtained from a remote server
         # TODO: implement by consuming a REST service
-        lv_light = light.Light(0, "online", "connected", "living room light", self)
-        lv_cam = camera.Camera(1, "online", "connected", "living room camera", self)
-        lv_tmp = temperature.Temperature(2, "online", "connected", "living room temperature sensor", self)
-        lv_mov = movement.Movement(3, "online", "connected", "living room PIR sensor", self)
+        lv_light = light.Light(0, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room light", self)
+        lv_cam = camera.Camera(1, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room camera", self)
+        lv_tmp = temperature.Temperature(2, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room temperature sensor", self)
+        lv_mov = movement.Movement(3, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room PIR sensor", self)
         devices = {
-            0: lv_light,
-            1: lv_cam,
-            2: lv_tmp,
-            3: lv_mov
+            "0": lv_light,
+            "1": lv_cam,
+            "2": lv_tmp,
+            "3": lv_mov
         }
         return devices
 
     def process_msg_from_device(self, payload):
+        print(payload)
         info = self.parse_payload(payload)
         source_device = self.devices.get(info[0], None)
         if source_device is None:
             # TODO: Notify server that gateway receives msg from unknown device
             raise AssertionError
-        source_device.process_internal_msg(payload)
+        source_device.process_internal_msg(info[1])
 
     def send_msg_to_server(self, msg):
         # TODO: send message to server
@@ -61,9 +64,17 @@ class Home:
         if target_device is None:
             # TODO: Notify caller that device id is not found
             raise AssertionError
-        if target_device.connectionStatus == "ONLINE":
+        if target_device.connectionState == device.Device.ONLINE_STATE:
             # TODO: check with target_device whether message is valid or not
-            things_send(f"/+/{target_device.get_topic()}", message)
+            self.send_message(f"{target_device.get_topic()}", message)
+
+
+    def send_message(self, topic, payload):
+        print(topic)
+        try:
+            publish.single(topic, payload, hostname="localhost")
+        except Exception as ex:
+            print("Error in send_conf(). ex: {}".format(ex))
 
     def process_msg_from_server(self, msg):
         # TODO: extract msg_type: home, room or device

@@ -17,7 +17,6 @@ class ThingsInbound:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.connect(MQTT_LOCAL_SERVER, 1883, 60)
-        print("connected")
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
 
@@ -35,8 +34,8 @@ class ThingsInbound:
 
     def on_connect(self, client, userdata, flags, rc):
         print("Connected with result code " + str(rc))
-        client.subscribe(MQTT_PATH + "/+")
+        client.subscribe(MQTT_PATH)
 
     def on_message(self, client, userdata, msg):
         print("InternalComm got a message")
-        self.myHome.process_msg_from_device(msg)
+        self.myHome.process_msg_from_device(msg.payload.decode("utf-8"))
