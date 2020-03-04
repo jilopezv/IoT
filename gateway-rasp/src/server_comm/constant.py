@@ -4,5 +4,5 @@ MQTT_REMOTE_SERVER = "localhost"  # Test server on local
 MQTT_PATH_RECV = "home_1_inbound"  # topic to subscribe
 MQTT_PATH_SEND = "home_outbound"  # topic to publish messages
 
-USR = "danny"  # user
-PASS = "danny"  # password
+USR = "guest"  # user
+PASS = "guest"  # password

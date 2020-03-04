@@ -1,9 +1,9 @@
 import subprocess
 from device import movement, light, temperature, camera
 from device.base import device
-from server_comm.server_outbound import send_status as server_send
+from server_comm.server_outbound import Server_Outbound
 # TODO: analyze which methods must be synchronized
-from things_comm import things_outbound
+from things_comm.things_outbound import Things_Outbound
 import paho.mqtt.publish as publish
 
 
@@ -56,7 +56,7 @@ class Home:
 
     def send_msg_to_server(self, msg):
         # TODO: send message to server
-        server_send("try")
+        Server_Outbound.send_status("try")
         raise NotImplementedError
 
     def send_msg_to_device(self, dev_id, message):
@@ -66,15 +66,7 @@ class Home:
             raise AssertionError
         if target_device.connectionState == device.Device.ONLINE_STATE:
             # TODO: check with target_device whether message is valid or not
-            self.send_message(f"{target_device.get_topic()}", message)
-
-
-    def send_message(self, topic, payload):
-        print(topic)
-        try:
-            publish.single(topic, payload, hostname="localhost")
-        except Exception as ex:
-            print("Error in send_conf(). ex: {}".format(ex))
+            Things_Outbound.send_message(f"{target_device.get_topic()}", message)
 
     def process_msg_from_server(self, msg):
         # TODO: extract msg_type: home, room or device
@@ -108,6 +100,8 @@ class Home:
 
     def send_alive_msg(self, msg):
         # TODO: send alive message to server
+        print("Entró")
+        self.send_msg_to_server(msg)
         raise NotImplementedError
 
     def toggle_lookout(self):
