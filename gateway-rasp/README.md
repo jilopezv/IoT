@@ -46,3 +46,17 @@ remoto. La siguiente pantalla muestra una prueba que se llevó a cabo para verif
 y la rPi se estaba dando.
 
 ![debug](debug_con_mosquitto.jpg)
+
+
+## Ejecución de la aplicación en desarrollo ##
+- Docker con rabbitMQ
+- Docker con Mosquitto
+---- docker-compose.yml
+
+archivo -dev: valores de las variables para desarrollo
+
+
+## Ejecución de la aplicación en producción ##
+archivo -prod: valores de las variables para producción
+instalar mosquitto en rasberry 
+compilar y subir a la raspberry
