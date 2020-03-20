@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+
+  smarthome-rabbitmq:
+    container_name: rabbit-server 
+    build:
+      context: rabbitmq
+    restart: always
+    volumes:
+      - "db-rabbitmq:/var/lib/rabbitmq"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "9883:1883"
+
+  smarthome-mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto-server
+    restart: always
+    volumes:
+        - "mosquitto-data:/data"
+        - "mosquitto-log:/log"
+    ports:
+        - "1883:1883"
+    
+volumes:
+  db-rabbitmq:
+  mosquitto-data:
+  mosquitto-log:

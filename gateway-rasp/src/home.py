@@ -60,7 +60,10 @@ class Home:
         raise NotImplementedError
 
     def send_msg_to_device(self, dev_id, message):
+
         target_device = self.devices.get(dev_id, None)
+        print('va a mandar', target_device.connectionState)
+
         if target_device is None:
             # TODO: Notify caller that device id is not found
             raise AssertionError

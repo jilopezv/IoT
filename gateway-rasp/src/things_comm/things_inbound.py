@@ -1,3 +1,5 @@
+import os
+
 import paho.mqtt.client as mqttc
 import home
 from things_comm.constant import *
@@ -15,7 +17,7 @@ class ThingsInbound:
         self.client = mqttc.Client()
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
-        self.client.connect(MQTT_LOCAL_SERVER, MQTT_PORT, 60)
+        self.client.connect(os.environ.get("MQTT_LOCAL_SERVER"), int(os.environ.get('MQTT_LOCAL_PORT')), 60)
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
 

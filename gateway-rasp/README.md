@@ -54,7 +54,18 @@ y la rPi se estaba dando.
 ---- docker-compose.yml
 
 archivo -dev: valores de las variables para desarrollo
+# para simular un dispositivo (Arduino)
+Hacia la raspberry
+mosquito_pub -h {host} - t {topic} -m {message: id, payload}
+mosquitto_pub -h localhost -t home -m 0,100
 
+state codes:
+100 : ONLINE
+
+
+Desde la raspberry
+mosquitto_sub - h {host} -t {topic: device_type/device_id}
+mosquitto_sub -h localhost -t Light/0 -d 
 
 ## Ejecución de la aplicación en producción ##
 archivo -prod: valores de las variables para producción
