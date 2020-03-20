@@ -5,11 +5,17 @@ from gui import gui
 import home
 from server_comm.server_inbound import ServerInbound
 from things_comm.things_inbound import ThingsInbound
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 """ SmartHome application entry point
 """
 
 def main():
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+
     print("python main function")
     my_home = home.Home()
     my_gui = gui.GUI(my_home)

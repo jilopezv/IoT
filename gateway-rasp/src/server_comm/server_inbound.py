@@ -1,3 +1,5 @@
+import os
+
 import paho.mqtt.client as mqttc
 import home
 from server_comm.constant import *
@@ -10,8 +12,8 @@ class ServerInbound:
         self.client = mqttc.Client()
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
-        self.client.username_pw_set(USR, PASS)
-        self.client.connect(MQTT_REMOTE_SERVER, 1883, 60)
+        self.client.username_pw_set(os.environ.get("MQTT_USR"), os.environ.get("MQTT_PWD"))
+        self.client.connect(os.environ.get("MQTT_REMOTE_SERVER"), 1883, 60)
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
         print("connected")
