@@ -65,10 +65,13 @@ Abrimos una terminal y nos subscribimos al tópico del dispositivo que queremos 
    ```
 
 ### Light ###
-- Mensajes que puede enviar la Rpi a un dispositivo tipo *Light*
-   - "0" : OFF
-   - "1" : ON
-   - "2" : Toggle light
+Mensajes que puede enviar la Rpi a un dispositivo tipo *Light*
+
+|**Código**| **Significado** |
+|:----:|:-----------:|
+| 0 | OFF|
+| 1 | ON|
+| 2 | Toggle light|
 
 
 ## Mensajes Device -> Rpi ##
@@ -88,17 +91,17 @@ Tipo de \<*payload*\>:
 
 |**Código**| **Significado** |
 |:----:|:-----------:|
-|"100" | ONLINE_STATE|
-|"-100"| OFFLINE_STATE|
-|"-1"  | UNKNOWN|
+| 100  | ONLINE_STATE|
+| -100 | OFFLINE_STATE|
+|  -1  | UNKNOWN|
 
 ### Light ###
 Tipo de \<*payload*\>:
 
 |**Código**| **Significado** |
 |:----:|:-----------:|
-|"0" | OFF|
-|"1" | ON |
+| 0 | OFF|
+| 1 | ON |
 
 
 
