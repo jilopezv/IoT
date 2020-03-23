@@ -34,8 +34,8 @@ class ThingsInbound:
     '''
 
     def on_connect(self, client, userdata, flags, rc):
-        print("Connected with result code " + str(rc))
-        client.subscribe(MQTT_PATH)
+        print("Connected with result code ", str(rc), "[THINGS_INBOUND]")
+        client.subscribe(MQTT_THINGS_INBOUND_DEFAULT_TOPIC)
 
     def on_message(self, client, userdata, msg):
         print("InternalComm got a message")

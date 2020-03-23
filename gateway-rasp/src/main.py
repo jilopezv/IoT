@@ -27,11 +27,11 @@ def main():
     my_home = home.Home()
     my_gui = gui.GUI(my_home)
     things_comm = ThingsInbound(my_home)
-    # server_comm = ServerInbound(my_home)
+    server_comm = ServerInbound(my_home)
 
     try:
         start_new_thread(things_comm.start, ())
-        # start_new_thread(server_comm.start, ())
+        start_new_thread(server_comm.start, ())
         # start_new_thread(gui.start, ())
     except Exception as ex:
         print("Error: unable to start thread. ex: {}".format(ex))

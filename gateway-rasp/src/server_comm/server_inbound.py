@@ -13,10 +13,9 @@ class ServerInbound:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.username_pw_set(os.environ.get("MQTT_USR"), os.environ.get("MQTT_PWD"))
-        self.client.connect(os.environ.get("MQTT_REMOTE_SERVER"), 1883, 60)
+        self.client.connect(os.environ.get("MQTT_REMOTE_SERVER"), int(os.environ.get("MQTT_REMOTE_PORT")), 60)
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
-        print("connected")
 
     def start(self):
         print("looping ...")
@@ -31,5 +30,5 @@ class ServerInbound:
         self.myHome.process_msg_from_server(info)
 
     def on_connect(self, client, userdata, flags, rc):
-        print("External Comm: connected with result code " + str(rc))
-        client.subscribe(MQTT_PATH_RECV)
+        print("External Comm: connected with result code ", str(rc), "[SERVER_INBOUND]")
+        client.subscribe(MQTT_SERVER_INBOUND_HOME_TOPIC)
