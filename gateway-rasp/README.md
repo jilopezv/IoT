@@ -49,25 +49,60 @@ y la rPi se estaba dando.
 
 
 ## Ejecución de la aplicación en desarrollo ##
-- Docker con rabbitMQ
-- Docker con Mosquitto
----- docker-compose.yml
+- Docker con rabbitMQ (servidor remoto)
+- Docker con Mosquitto (local)
+- docker-compose.yml
 
-archivo -dev: valores de las variables para desarrollo
-# para simular un dispositivo (Arduino)
-Hacia la raspberry
-mosquito_pub -h {host} - t {topic} -m {message: id, payload}
-mosquitto_pub -h localhost -t home -m 0,100
+   archivo -dev: valores de las variables para desarrollo
 
-state codes:
-100 : ONLINE
+## Mensajes Rpi -> Device ##
+### Desde la raspberry ###
+Abrimos una terminal y nos subscribimos al tópico del dispositivo que queremos monitorear/simular:
+- mosquitto_sub - h {host} -t {topic: device_type/device_id}
+- Por ejemplo, si queremos monitorear los mensajes enviados desde la Rpi a el dispositivo tipo *Light* con identificador *0*: 
+   ```bash
+   mosquitto_sub -h localhost -t Light/0 -d 
+   ```
+
+### Light ###
+- Mensajes que puede enviar la Rpi a un dispositivo tipo *Light*
+   - "0" : OFF
+   - "1" : ON
+   - "2" : Toggle light
 
 
-Desde la raspberry
-mosquitto_sub - h {host} -t {topic: device_type/device_id}
-mosquitto_sub -h localhost -t Light/0 -d 
+## Mensajes Device -> Rpi ##
+### Para simular un dispositivo (Arduino) ###
+Para simular un mensaje desde un dipositivo a la Rpi, abrimos una terminal y publicamos mensajes al tópico de escucha de la Rpi:
+- mosquito_pub -h { *dir. IP Rpi* } - t {topic} -m {message: id, payload}
+- Ejemplo (en ambiente de desarrollo):
+   ```bash
+   mosquitto_pub -h localhost -t home -m 0,100
+   ```
+
+Formato mensaje CSV: \<*id*\>,\<*payload*\>
+
+### Para todos los Devices ###
+
+Tipo de \<*payload*\>:
+
+|**Código**| **Significado** |
+|:----:|:-----------:|
+|"100" | ONLINE_STATE|
+|"-100"| OFFLINE_STATE|
+|"-1"  | UNKNOWN|
+
+### Light ###
+Tipo de \<*payload*\>:
+
+|**Código**| **Significado** |
+|:----:|:-----------:|
+|"0" | OFF|
+|"1" | ON |
+
+
 
 ## Ejecución de la aplicación en producción ##
-archivo -prod: valores de las variables para producción
-instalar mosquitto en rasberry 
-compilar y subir a la raspberry
+- Archivo prod.env: valores de las variables para producción
+- Instalar mosquitto en rasberry 
+- Compilar y subir a la raspberry
