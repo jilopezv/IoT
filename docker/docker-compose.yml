@@ -23,8 +23,24 @@ services:
         - "mosquitto-log:/log"
     ports:
         - "1883:1883"
+        
+  postgres:
+    image: postgres:12.2-alpine
+    container_name: postgresdb
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db-postgres-data:/var/lib/postgresql/data
+      - db-postgres-tmp:/tmp
+    ports:
+      - "5432:5432"                     
     
 volumes:
   db-rabbitmq:
   mosquitto-data:
   mosquitto-log:
+  db-postgres-data:
+  db-postgres-tmp:
