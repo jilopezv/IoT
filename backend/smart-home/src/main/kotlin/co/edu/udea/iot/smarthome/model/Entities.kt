@@ -1,26 +1,28 @@
 package co.edu.udea.iot.smarthome.model
 
+import com.github.pozo.KotlinBuilder
 import java.io.Serializable
 import javax.persistence.*
 
 @Entity
 @Table(name = "users")
+@KotlinBuilder
 data class User(
         @Id @GeneratedValue
-        var id: Long,
+        var id: Long?,
         @Column(nullable = false)
-        var email: String,
+        var email: String?,
         @Column(nullable = false)
-        var firstName: String,
+        var firstName: String?,
         @Column(nullable = false)
-        var lastName: String,
+        var lastName: String?,
         @Column(nullable = false)
-        var nickName: String,
+        var nickName: String?,
 
         @OneToMany(mappedBy = "user")
-        var homes: MutableList<Home>,
+        var homes: MutableList<Home>?,
         @OneToMany(mappedBy = "user")
-        var accesses: MutableList<Access>
+        var accesses: MutableList<Access>?
 )
 
 @Entity

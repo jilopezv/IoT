@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class SmartHomeApplication
 
 fun main(args: Array<String>) {
-	runApplication<SmartHomeApplication>(*args)
+    runApplication<SmartHomeApplication>(*args)
 }
