@@ -27,6 +27,7 @@ data class User(
 
 @Entity
 @Table(name = "homes")
+@KotlinBuilder
 data class Home(
         @Id
         var id: String,
@@ -37,11 +38,11 @@ data class Home(
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "user_id", insertable = false, updatable = false)
-        var user: User,
+        var user: User?,
         @OneToMany(mappedBy = "home")
-        var accesses: MutableList<Access>,
+        var accesses: MutableList<Access>?,
         @OneToMany(mappedBy = "home")
-        var rooms: MutableList<Room>
+        var rooms: MutableList<Room>?
 )
 
 @Entity

@@ -1,6 +1,8 @@
 package co.edu.udea.iot.smarthome.mapper
 
+import co.edu.udea.iot.smarthome.dto.HomeDTO
 import co.edu.udea.iot.smarthome.dto.UserDTO
+import co.edu.udea.iot.smarthome.model.Home
 import co.edu.udea.iot.smarthome.model.User
 import org.mapstruct.Mapper
 import org.mapstruct.ReportingPolicy
@@ -17,3 +19,6 @@ interface EntityMapper<D, E> {
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface UserMapper : EntityMapper<UserDTO, User>
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+interface HomeMapper : EntityMapper<HomeDTO, Home>
