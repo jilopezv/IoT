@@ -10,6 +10,8 @@ interface EntityMapper<D, E> {
     fun toDto(entity: E): D
     fun toEntity(dtoList: List<D>?): List<E>?
     fun toDto(entityList: List<E>?): List<D>?
+    fun toEntity(dtoList: Set<D>?): Set<E>?
+    fun toDto(entityList: Set<E>?): Set<D>?
 }
 
 
