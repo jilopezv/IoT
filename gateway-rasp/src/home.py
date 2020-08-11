@@ -57,7 +57,6 @@ class Home:
     def send_msg_to_server(self, msg):
         # TODO: send message to server
         Server_Outbound.send_status("try")
-        raise NotImplementedError
 
     def send_msg_to_device(self, dev_id, message):
 
@@ -102,8 +101,8 @@ class Home:
         raise NotImplementedError
 
     def send_alive_msg(self, msg):
+        print('se prepara para enviar mensaje al server')
         # TODO: send alive message to server
-        print("Entró")
         self.send_msg_to_server(msg)
         raise NotImplementedError
 
@@ -118,12 +117,12 @@ class Home:
         """
         self.lookout = not self.lookout
         print("new lookout state to " + format(self.lookout))
-        '''ExternalComm.ExternalComm.send_status(format(self.lookout))
+        Server_Outbound.send_status(format(self.lookout))
         if self.lookout:
-            InternalComm.ThingsComm.send_conf("pir_conf", "1")
+            Things_Outbound.send_message("pir_conf", "1")
         else:
-            InternalComm.ThingsComm.send_conf("pir_conf", "0")
-        return self.lookout'''
+            Things_Outbound.send_message("pir_conf", "0")
+        return self.lookout
 
     def get_lookout(self):
         return self.lookout

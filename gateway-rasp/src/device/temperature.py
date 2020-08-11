@@ -3,7 +3,7 @@ from device.base import device
 
 class Temperature(device.Device):
 
-    topic_prefix = "temp"
+    topic_prefix = "Temp"
 
     def __init__(self, id, state, connectionState, name, home):
         super().__init__(id, state, connectionState, name, home, self.topic_prefix)
@@ -23,4 +23,4 @@ class Temperature(device.Device):
             self.clean_count()
 
     def get_topic(self):
-        return f"Temperature/{self.id}"
+        return f"{self.topic_prefix}/{self.id}"

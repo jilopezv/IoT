@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import home
+import logging
 
 
 # from things_comm.things_outbound import send_message
@@ -55,6 +56,7 @@ class Device(ABC):
         pass
 
     def eval_state_to_report(self):
+        print('Evalúa estado para reportar al servidor')
         self.msg_count += 1
         # TODO: change explicit number 5 to a constant variable
         if self.msg_count == 5:

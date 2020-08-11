@@ -2,7 +2,7 @@
 import sys
 from _thread import start_new_thread
 
-from gui import gui
+from gui import smart_home
 import home
 from server_comm.server_inbound import ServerInbound
 from things_comm.things_inbound import ThingsInbound
@@ -25,7 +25,7 @@ def main():
 
     print("python main function")
     my_home = home.Home()
-    my_gui = gui.GUI(my_home)
+    my_gui = smart_home.SmartHome(my_home)
     things_comm = ThingsInbound(my_home)
     server_comm = ServerInbound(my_home)
 
@@ -36,7 +36,7 @@ def main():
     except Exception as ex:
         print("Error: unable to start thread. ex: {}".format(ex))
 
-    my_gui.start()
+    my_gui.run()
     # while my_home.is_ended():
     #    pass
 

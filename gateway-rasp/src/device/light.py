@@ -4,7 +4,7 @@ from device.base import device
 # TOGGLE_LIGHT_MESSAGE = 10
 
 class Light(device.Device):
-    topic_prefix = "light"
+    topic_prefix = "Light"
 
     def __init__(self, id, state, connectionState, name, home):
         super().__init__(id, state, connectionState, name, home, self.topic_prefix)
@@ -30,4 +30,4 @@ class Light(device.Device):
                 self.clean_count()
 
     def get_topic(self):
-        return f"Light/{self.id}"
+        return f"{self.topic_prefix}/{self.id}"

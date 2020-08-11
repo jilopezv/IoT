@@ -1,4 +1,5 @@
 import os
+import logging
 
 import paho.mqtt.client as mqttc
 import home
@@ -18,7 +19,7 @@ class ServerInbound:
         self.myHome = ref_home
 
     def start(self):
-        print("looping ...")
+        logging.debug("looping ...")
         self.client.loop_forever()
 
     def on_message(self, client, userdata, msg):

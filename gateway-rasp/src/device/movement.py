@@ -2,7 +2,7 @@ from device.base import device
 
 
 class Movement(device.Device):
-    topic_prefix = "move"
+    topic_prefix = "Movement"
 
     def __init__(self, id, state, connectionState, name, home):
         super().__init__(id, state, connectionState, name, home, self.topic_prefix)
@@ -19,4 +19,4 @@ class Movement(device.Device):
             pass
 
     def get_topic(self):
-        return f"Movemente/{self.id}"
+        return f"{self.topic_prefix}/{self.id}"

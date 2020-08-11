@@ -2,7 +2,7 @@ from device.base import device
 
 
 class Camera(device.Device):
-    topic_prefix = "camera"
+    topic_prefix = "Camera"
 
     def __init__(self, id, state, connectionState, name, home):
         super().__init__(id, state, connectionState, name, home, self.topic_prefix)
@@ -18,4 +18,4 @@ class Camera(device.Device):
             self.clean_count()
 
     def get_topic(self):
-        return f"Camera/{self.id}"
+        return f"{self.topic_prefix}/{self.id}"

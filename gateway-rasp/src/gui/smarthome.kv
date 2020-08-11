@@ -1,0 +1,277 @@
+#: import icon kivysome.icon
+#: import hex kivy.utils.get_color_from_hex
+<Widget>:
+    font_size: 25
+    font_name: 'gui/font/Roboto-Bold.ttf'
+
+
+<ControlPanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        padding: 20
+        spacing: 10
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 260
+            row_force_default: True
+            Label:
+                markup: True
+                text: "%s"%(icon('crow', 256))
+                font_color: 1, 0, 0, 1
+                p: 0
+            Label:
+                text: 'SMART HOME'
+                font_size: 100
+                font_color: 1, 0, 0, 1
+                p: 0
+
+        GridLayout:
+            cols: 3
+            row_default_height: 250
+            row_force_default: True
+            Button:
+                markup: True
+                text: "%s"%(icon('lightbulb', 128))
+                on_press: root.showLightsPanel()
+            Button:
+                markup: True
+                text: "%s"%(icon('temperature-low', 128))
+                on_press: root.showTemperaturePanel()
+            Button:
+                markup: True
+                text: "%s"%(icon('video', 128))
+                on_press: root.showCameraPanel()
+            Button:
+                markup: True
+                text: "%s"%(icon('door-open', 128))
+                on_press: root.showDoorsPanel()
+            Button:
+                markup: True
+                text: "%s"%(icon('walking', 128))
+                on_press: root.showMovementPanel()
+            Button:
+                markup: True
+                text: "%s"%(icon('user-shield', 128))
+                on_press: root.showLookoutPanel()
+        AnchorLayout:
+            anchor_x: 'right'
+            Button:
+                size: 100, 100
+                size_hint: None, None
+                markup: True
+                text: "%s"%(icon('lock', 64))
+                on_press: root.calcularFactorial()
+
+
+
+
+<Lightspanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    numeroUno: txtNumeroUno.text
+    numeroDos: txtNumeroDos.text
+    BoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 60
+            row_force_default: True
+            Label:
+                text: 'Ingrese un número'
+            TextInput:
+                id: txtNumeroUno
+            Label:
+                text: 'Ingrese otro número'
+            TextInput:
+                id: txtNumeroDos
+        Button:
+            text: 'Sumar'
+            on_press: root.sumar()
+        Button:
+            text: 'Volver'
+            on_press:
+                root.regresar()
+
+<Temperaturepanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    numeroUno: txtNumeroUno.text
+    numeroDos: txtNumeroDos.text
+    BoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 60
+            row_force_default: True
+            Label:
+                text: 'Ingrese un número'
+            TextInput:
+                id: txtNumeroUno
+            Label:
+                text: 'Ingrese otro número'
+            TextInput:
+                id: txtNumeroDos
+        Button:
+            text: 'Sumar'
+            on_press: root.sumar()
+        Button:
+            text: 'Volver'
+            on_press:
+                root.regresar()
+
+<Camerapanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    numeroUno: txtNumeroUno.text
+    numeroDos: txtNumeroDos.text
+    BoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 60
+            row_force_default: True
+            Label:
+                text: 'Ingrese un número'
+            TextInput:
+                id: txtNumeroUno
+            Label:
+                text: 'Ingrese otro número'
+            TextInput:
+                id: txtNumeroDos
+        Button:
+            text: 'Sumar'
+            on_press: root.sumar()
+        Button:
+            text: 'Volver'
+            on_press:
+                root.regresar()
+
+<Doorspanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    numeroUno: txtNumeroUno.text
+    numeroDos: txtNumeroDos.text
+    BoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 60
+            row_force_default: True
+            Label:
+                text: 'Ingrese un número'
+            TextInput:
+                id: txtNumeroUno
+            Label:
+                text: 'Ingrese otro número'
+            TextInput:
+                id: txtNumeroDos
+        Button:
+            text: 'Sumar'
+            on_press: root.sumar()
+        Button:
+            text: 'Volver'
+            on_press:
+                root.regresar()
+
+<Movementpanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    numeroUno: txtNumeroUno.text
+    numeroDos: txtNumeroDos.text
+    BoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 60
+            row_force_default: True
+            Label:
+                text: 'Ingrese un número'
+            TextInput:
+                id: txtNumeroUno
+            Label:
+                text: 'Ingrese otro número'
+            TextInput:
+                id: txtNumeroDos
+        Button:
+            text: 'Sumar'
+            on_press: root.sumar()
+        Button:
+            text: 'Volver'
+            on_press:
+                root.regresar()
+
+<Lookoutpanel>:
+    canvas:
+        Color:
+            rgba: hex('#171738')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    numeroUno: txtNumeroUno.text
+    numeroDos: txtNumeroDos.text
+    BoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            spacing: 20
+            row_default_height: 60
+            row_force_default: True
+            Label:
+                text: 'Ingrese un número'
+            TextInput:
+                id: txtNumeroUno
+            Label:
+                text: 'Ingrese otro número'
+            TextInput:
+                id: txtNumeroDos
+        Button:
+            text: 'Sumar'
+            on_press: root.toggle()
+        Button:
+            text: 'Volver'
+            on_press:
+                root.regresar()
