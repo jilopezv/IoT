@@ -1,6 +1,7 @@
 package co.edu.udea.iot.smarthome.controller
 
 import co.edu.udea.iot.smarthome.dto.HomeDTO
+import co.edu.udea.iot.smarthome.dto.MessageDTO
 import co.edu.udea.iot.smarthome.facade.HomeFacade
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -25,5 +26,16 @@ class HomeController(private val homeFacade: HomeFacade) {
     ])
     fun createHome(@RequestBody homeDTO: HomeDTO) =
             homeFacade.saveHome(homeDTO)
+
+    @PostMapping("/devices")
+    @Operation(summary = "Send a message to a device")
+    @ApiResponses(value = [
+        ApiResponse(responseCode = "200", description = "the message has been successfully sent", content = [Content(schema = Schema(implementation = MessageDTO::class))]),
+        ApiResponse(responseCode = "400", description = "Invalid request"),
+        ApiResponse(responseCode = "500", description = "Internal error")
+    ])
+    fun sendMessageToDevice(@RequestBody messageDTO: MessageDTO) =
+            homeFacade.sendMessageToDevice(messageDTO)
+
 
 }

@@ -1,6 +1,7 @@
 package co.edu.udea.iot.smarthome.dto
 
 import com.github.pozo.KotlinBuilder
+import javax.validation.constraints.NotNull
 
 @KotlinBuilder
 data class UserDTO(
@@ -15,5 +16,14 @@ data class UserDTO(
 data class HomeDTO(
         var id: String,
         var name: String,
+        @NotNull(message = "El id del usuario es requerido")
         var userId: Long
+)
+
+@KotlinBuilder
+data class MessageDTO(
+        var homeId: String,
+        var deviceType: String,
+        var deviceId: String,
+        var payload: String
 )
