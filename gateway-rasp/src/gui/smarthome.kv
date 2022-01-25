@@ -34,11 +34,9 @@
 
         GridLayout:
             cols: 3
-            row_default_height: 250
-            row_force_default: True
             Button:
                 markup: True
-                text: "%s"%(icon('lightbulb', 128))
+                text: "%s"%(icon('lightbulb'))
                 on_press: root.showLightsPanel()
             Button:
                 markup: True
@@ -63,7 +61,6 @@
         AnchorLayout:
             anchor_x: 'right'
             Button:
-                size: 100, 100
                 size_hint: None, None
                 markup: True
                 text: "%s"%(icon('lock', 64))

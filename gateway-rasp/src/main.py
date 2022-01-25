@@ -19,7 +19,6 @@ def main():
     for arg in sys.argv[1:]:
         if arg == 'prod':
             env = 'prod'
-
     dotenv_path = join(dirname(__file__), env + '.env')
     load_dotenv(dotenv_path)
 

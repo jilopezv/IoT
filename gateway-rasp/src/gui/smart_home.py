@@ -16,7 +16,7 @@ class SmartHome(App):  # el archivo kv debe llamarse igual
 
     def __init__(self, home, **kwargs):
         super().__init__(**kwargs)
-        kivysome.enable("https://kit.fontawesome.com/ddee73d32d.js", group=kivysome.FontGroup.SOLID)
+        kivysome.enable(kivysome.LATEST, group=kivysome.FontGroup.SOLID)
         self.home = home
 
     def build(self):
