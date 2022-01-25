@@ -15,7 +15,7 @@ services:
       - "9883:1883"
 
   smarthome-mosquitto:
-    image: eclipse-mosquitto:latest
+    image: eclipse-mosquitto:1.6
     container_name: mosquitto-server
     restart: always
     volumes:
