@@ -1,5 +1,5 @@
-const char* ssid     = "Nett1";
-const char* password = "zvwq1218";
+const char* ssid     = "Malditsllaves";
+const char* password = "tectectec";
 const char* hostname = "ESP32_1";
 
 IPAddress ip(192, 168, 200, 10);

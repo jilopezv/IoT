@@ -31,17 +31,14 @@ OneWire oneWire(oneWireBus);
 DallasTemperature sensors (&oneWire);
 
 void setup() {
-
+  pinMode(BUILTIN_LED, OUTPUT);    // BUILTIN_LED pin as an output
   digitalWrite(BUILTIN_LED, LOW); // Light initial state is OFF
 
   //Ajustar la velocidad para el monitor serie
   Serial.begin(115200);
   sensors.begin();
-
-  pinMode(BUILTIN_LED, OUTPUT);    // BUILTIN_LED pin as an output
-  
   SPIFFS.begin();
-  ConnectWiFi_STA(true);
+  ConnectWiFi_STA(false);
   InitMqtt();
 
 }
