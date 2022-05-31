@@ -45,6 +45,8 @@ void OnMqttReceived(char* topic, byte* payload, unsigned int length)
    Serial.print(content);
    Serial.println();
 
+
+   // This code indicates what to do with the received message
    if((char)payload[0] == '1') {
       light_state=1;
       digitalWrite(BUILTIN_LED, HIGH);
