@@ -23,7 +23,7 @@
 const int oneWireBus = 4;
 
 // Pin for builtin led in the esp32 board
-#define BUILTIN_LED 2
+#define RELAY 14
 int light_state = 0; // Initial led's state
 
 //Set the onewire interface
@@ -33,8 +33,8 @@ OneWire oneWire(oneWireBus);
 DallasTemperature sensors (&oneWire);
 
 void setup() {
-  pinMode(BUILTIN_LED, OUTPUT);    // BUILTIN_LED pin as an output
-  digitalWrite(BUILTIN_LED, LOW);  // Light initial state is OFF
+  pinMode(RELAY, OUTPUT);    // BUILTIN_LED pin as an output
+  digitalWrite(RELAY, LOW);  // Light initial state is OFF
 
   // Set the serial monitor baud rate
   Serial.begin(115200);
@@ -70,5 +70,5 @@ void loop() {
   PublisMqttString("casa/tmp", msg);
 
   // Read temperature each 5 seconds
-  delay(5000);
+  delay(500);
 }
