@@ -1,13 +1,13 @@
 const char* MQTT_BROKER_ADRESS = "192.168.141.106";
 const uint16_t MQTT_PORT = 1883;
-const char* MQTT_CLIENT_NAME = "ESPClient_1";
+const char* MQTT_CLIENT_NAME = "ESPClient_2";
+
+
+extern char home_state;
 
 // Topics
-const char* DEVICE_TYPE = "Light";
+const char* DEVICE_TYPE = "Mov";
 const char* DEVICE_ID = "0";
-#define RELAY 14
-
-extern int light_state;
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
@@ -33,6 +33,7 @@ void PublisMqttString(char* topic, char* msg)
 }
 
 String content = "";
+
 void OnMqttReceived(char* topic, byte* payload, unsigned int length) 
 {
    Serial.print("Received on ");
@@ -46,25 +47,11 @@ void OnMqttReceived(char* topic, byte* payload, unsigned int length)
    Serial.print(content);
    Serial.println();
 
+   //If payload is "1", change sensor state to lookout
+   if ((char)payload[5]=='1')
+     home_state = 1; // Set sensor state ->  1 lookout
+   else
+     home_state = 0; // Clear sensor state ->  0 normal
+   
 
-   // This code indicates what to do with the received message
-   if((char)payload[0] == '1') {
-      light_state=1;
-      digitalWrite(RELAY, HIGH);
-   }
-   else if ((char)payload[0] == '0') {
-      light_state=0;
-      digitalWrite(RELAY, LOW);
-   }
-   else if ((char)payload[0] == '2') { 
-      // Toggle light 
-      if (light_state == 1){
-        light_state=0;
-        digitalWrite(RELAY, LOW);
-      }
-      else{
-        light_state=1;
-        digitalWrite(RELAY, HIGH);
-      }
-  }
 }
