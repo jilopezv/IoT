@@ -1,4 +1,8 @@
 import subprocess
+
+from kivy.event import EventDispatcher
+from kivy.properties import BooleanProperty
+
 from device import movement, light, temperature, camera
 from device.base import device
 from server_comm.server_outbound import Server_Outbound
@@ -7,8 +11,9 @@ from things_comm.things_outbound import Things_Outbound
 import paho.mqtt.publish as publish
 
 
-class Home:
-    """ Class Home
+class Home(EventDispatcher):
+    """
+        Class Home
         Home represents the smart home basic functionality
 
         Attributes:
@@ -19,12 +24,13 @@ class Home:
     topic_prefix = "home"
     devices = []
 
+    lookout = BooleanProperty(False)
+
     def __init__(self):
         """ home constructor
         set initial state in Home class.
         """
         print("New Home created")
-        self.lookout = False
         self.light = False
         self.flag = True
         self.devices = {}
@@ -59,7 +65,6 @@ class Home:
         Server_Outbound.send_status("try")
 
     def send_msg_to_device(self, dev_id, message):
-
         target_device = self.devices.get(dev_id, None)
         print('va a mandar', target_device.connectionState)
 

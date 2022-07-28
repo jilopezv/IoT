@@ -15,10 +15,10 @@ class Device(ABC):
     OFFLINE_STATE = "-100"
     UNKNOWN = "-1"
 
-    def __init__(self, id, state, connectionState, name, ref_home, topic_prefix):
+    def __init__(self, id, state, connectionStatus, name, ref_home):
         self.id = id
         self.state = state
-        self.connectionState = connectionState
+        self.connectionStatus = connectionStatus
         self.name = name
         assert isinstance(ref_home, home.Home)
         self.my_home = ref_home

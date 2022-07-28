@@ -1,23 +1,40 @@
+from time import strftime
+
 from kivy.base import EventLoop
-from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.gridlayout import GridLayout
+from kivy.clock import Clock
+from kivy.properties import StringProperty, BooleanProperty
 from kivy.uix.screenmanager import Screen
-from kivy.uix.label import Label
-from kivy.base import EventLoop
-from kivy.uix.widget import Widget
 
 
 class ControlPanel(Screen):
-    numeroIngresado = StringProperty()
-    resultado = StringProperty()
-    gridDinamico = ObjectProperty()
+    currentTime = StringProperty("NOT SET")
+    home_status = StringProperty("shield-off")
 
-    def build(self):
+    def __init__(self, container, **kw):
+        super().__init__(**kw)
+        self.container = container
+        Clock.schedule_interval(self.update_clock, 1)
+        self.container.home.bind(lookout=self.update_home_status)
+
+    def on_enter(self):
         EventLoop.window.clear_color = (.5, .5, .5, 1)
 
-    def showLightsPanel(self):
+    def update_clock(self, *args):
+        self.currentTime = strftime('%H:%M:%S %p')
+
+    def toggle_lookout(self):
+        self.container.home.toggle_lookout()
+
+    def update_home_status(self, *args):
+        lookout = args[1]
+        if lookout:
+            self.home_status = "shield-home"
+        else:
+            self.home_status = "shield-off"
+
+    def showRoomPanel(self):
         self.manager.transition.direction = 'right'
-        self.manager.current = 'lightspanel'
+        self.manager.current = 'roompanel'
 
     def showTemperaturePanel(self):
         self.manager.transition.direction = 'down'
@@ -38,5 +55,3 @@ class ControlPanel(Screen):
     def showLookoutPanel(self):
         self.manager.transition.direction = 'left'
         self.manager.current = 'lookoutpanel'
-
-

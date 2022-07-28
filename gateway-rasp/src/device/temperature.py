@@ -6,7 +6,7 @@ class Temperature(device.Device):
     topic_prefix = "Temp"
 
     def __init__(self, id, state, connectionState, name, home):
-        super().__init__(id, state, connectionState, name, home, self.topic_prefix)
+        super().__init__(id, state, connectionState, name, home)
 
     def process_external_msg(self, parameter_list):
         raise NotImplementedError

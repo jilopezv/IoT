@@ -1,274 +1,131 @@
-#: import icon kivysome.icon
 #: import hex kivy.utils.get_color_from_hex
-<Widget>:
-    font_size: 25
-    font_name: 'gui/font/Roboto-Bold.ttf'
-
+#:import images_path kivymd.images_path
 
 <ControlPanel>:
     canvas:
         Color:
-            rgba: hex('#171738')
+            rgba: hex('#fff')
         Rectangle:
             pos: self.pos
             size: self.size
-    BoxLayout:
-        padding: 20
-        spacing: 10
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 260
-            row_force_default: True
-            Label:
-                markup: True
-                text: "%s"%(icon('crow', 256))
-                font_color: 1, 0, 0, 1
-                p: 0
-            Label:
-                text: 'SMART HOME'
-                font_size: 100
-                font_color: 1, 0, 0, 1
-                p: 0
+    MDBoxLayout:
+        spacing: dp(10)
+        padding: dp(20)
+        orientation: 'vertical'
 
-        GridLayout:
+        MDLabel:
+            text: 'SMART HOME'
+            font_style: "H1"
+            font_color: 1, 0, 0, 1
+            halign: "center"
+
+
+        MDGridLayout:
+            cols: 2
+            spacing: 10
+
+            MDFillRoundFlatIconButton:
+                icon: "sofa"
+                text: "Living room"
+                on_press: root.showRoomPanel()
+
+            MDFillRoundFlatIconButton:
+                icon: "fridge"
+                text: "Kitchen"
+                on_press: root.showRoomPanel()
+
+            MDFillRoundFlatIconButton:
+                icon: "bed"
+                text: "Bedroom"
+                on_press: root.showRoomPanel()
+
+        MDGridLayout:
             cols: 3
-            Button:
-                markup: True
-                text: "%s"%(icon('lightbulb'))
-                on_press: root.showLightsPanel()
-            Button:
-                markup: True
-                text: "%s"%(icon('temperature-low', 128))
-                on_press: root.showTemperaturePanel()
-            Button:
-                markup: True
-                text: "%s"%(icon('video', 128))
-                on_press: root.showCameraPanel()
-            Button:
-                markup: True
-                text: "%s"%(icon('door-open', 128))
-                on_press: root.showDoorsPanel()
-            Button:
-                markup: True
-                text: "%s"%(icon('walking', 128))
-                on_press: root.showMovementPanel()
-            Button:
-                markup: True
-                text: "%s"%(icon('user-shield', 128))
-                on_press: root.showLookoutPanel()
+            spacing: 10
+
+            MDLabel:
+                text: root.currentTime
+                font_style: "H5"
+                font_color: 1, 0, 0, 1
+
+            MDLabel:
+                text: 'LEVEL 0'
+                font_style: "H5"
+                font_color: 1, 0, 0, 1
+
+            MDIconButton:
+                icon: root.home_status
+                user_font_size : "48sp"
+                on_press: root.toggle_lookout()
+
+<RoomPanel>:
+    canvas:
+        Color:
+            rgba: hex('#6699CC')
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    MDBoxLayout:
+        padding: 20
+        spacing: 20
+        orientation: "vertical"
+
+        MDGridLayout:
+            cols: 2
+            spacing: dp(5)
+            MDLabel:
+                text: 'LIVING ROOM'
+                font_style: "H4"
+                font_color: 1, 0, 0, 1
+                halign: "center"
+
+            MDFillRoundFlatIconButton:
+                icon: "view-dashboard"
+                text: "Back"
+                on_press: root.showControlPanel()
+
+
+
+        MDGridLayout:
+            cols: 2
+            spacing: dp(5)
+
+            Label:
+                text: 'Light'
+                size: self.texture_size
+
+            MDFillRoundFlatIconButton:
+                icon: "lightbulb"
+                text: "Primary"
+
+            Label:
+                text: 'Temperature:'
+                size: self.texture_size
+
+            MDFillRoundFlatIconButton:
+                icon: "thermometer"
+                text: "Primary"
+
+            Label:
+                text: 'Movement:'
+                size: self.texture_size
+
+            MDFillRoundFlatIconButton:
+                icon: "motion-sensor"
+                text: "Primary"
+
         AnchorLayout:
-            anchor_x: 'right'
-            Button:
-                size_hint: None, None
-                markup: True
-                text: "%s"%(icon('lock', 64))
-                on_press: root.calcularFactorial()
+            anchor_x: "right"
+            MDFillRoundFlatIconButton:
+                icon: "cctv"
+                text: "Cam"
 
 
 
 
-<Lightspanel>:
-    canvas:
-        Color:
-            rgba: hex('#171738')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    numeroUno: txtNumeroUno.text
-    numeroDos: txtNumeroDos.text
-    BoxLayout:
-        padding: 20
-        spacing: 20
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 60
-            row_force_default: True
-            Label:
-                text: 'Ingrese un número'
-            TextInput:
-                id: txtNumeroUno
-            Label:
-                text: 'Ingrese otro número'
-            TextInput:
-                id: txtNumeroDos
-        Button:
-            text: 'Sumar'
-            on_press: root.sumar()
-        Button:
-            text: 'Volver'
-            on_press:
-                root.regresar()
 
-<Temperaturepanel>:
-    canvas:
-        Color:
-            rgba: hex('#171738')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    numeroUno: txtNumeroUno.text
-    numeroDos: txtNumeroDos.text
-    BoxLayout:
-        padding: 20
-        spacing: 20
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 60
-            row_force_default: True
-            Label:
-                text: 'Ingrese un número'
-            TextInput:
-                id: txtNumeroUno
-            Label:
-                text: 'Ingrese otro número'
-            TextInput:
-                id: txtNumeroDos
-        Button:
-            text: 'Sumar'
-            on_press: root.sumar()
-        Button:
-            text: 'Volver'
-            on_press:
-                root.regresar()
 
-<Camerapanel>:
-    canvas:
-        Color:
-            rgba: hex('#171738')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    numeroUno: txtNumeroUno.text
-    numeroDos: txtNumeroDos.text
-    BoxLayout:
-        padding: 20
-        spacing: 20
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 60
-            row_force_default: True
-            Label:
-                text: 'Ingrese un número'
-            TextInput:
-                id: txtNumeroUno
-            Label:
-                text: 'Ingrese otro número'
-            TextInput:
-                id: txtNumeroDos
-        Button:
-            text: 'Sumar'
-            on_press: root.sumar()
-        Button:
-            text: 'Volver'
-            on_press:
-                root.regresar()
 
-<Doorspanel>:
-    canvas:
-        Color:
-            rgba: hex('#171738')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    numeroUno: txtNumeroUno.text
-    numeroDos: txtNumeroDos.text
-    BoxLayout:
-        padding: 20
-        spacing: 20
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 60
-            row_force_default: True
-            Label:
-                text: 'Ingrese un número'
-            TextInput:
-                id: txtNumeroUno
-            Label:
-                text: 'Ingrese otro número'
-            TextInput:
-                id: txtNumeroDos
-        Button:
-            text: 'Sumar'
-            on_press: root.sumar()
-        Button:
-            text: 'Volver'
-            on_press:
-                root.regresar()
 
-<Movementpanel>:
-    canvas:
-        Color:
-            rgba: hex('#171738')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    numeroUno: txtNumeroUno.text
-    numeroDos: txtNumeroDos.text
-    BoxLayout:
-        padding: 20
-        spacing: 20
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 60
-            row_force_default: True
-            Label:
-                text: 'Ingrese un número'
-            TextInput:
-                id: txtNumeroUno
-            Label:
-                text: 'Ingrese otro número'
-            TextInput:
-                id: txtNumeroDos
-        Button:
-            text: 'Sumar'
-            on_press: root.sumar()
-        Button:
-            text: 'Volver'
-            on_press:
-                root.regresar()
 
-<Lookoutpanel>:
-    canvas:
-        Color:
-            rgba: hex('#171738')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    numeroUno: txtNumeroUno.text
-    numeroDos: txtNumeroDos.text
-    BoxLayout:
-        padding: 20
-        spacing: 20
-        orientation: "vertical"
-        GridLayout:
-            cols: 2
-            spacing: 20
-            row_default_height: 60
-            row_force_default: True
-            Label:
-                text: 'Ingrese un número'
-            TextInput:
-                id: txtNumeroUno
-            Label:
-                text: 'Ingrese otro número'
-            TextInput:
-                id: txtNumeroDos
-        Button:
-            text: 'Sumar'
-            on_press: root.toggle()
-        Button:
-            text: 'Volver'
-            on_press:
-                root.regresar()
+

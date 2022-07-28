@@ -14,7 +14,10 @@ class ServerInbound:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.username_pw_set(os.environ.get("MQTT_USR"), os.environ.get("MQTT_PWD"))
-        self.client.connect(os.environ.get("MQTT_REMOTE_SERVER"), int(os.environ.get("MQTT_REMOTE_PORT")), 60)
+        try:
+            self.client.connect(os.environ.get("MQTT_REMOTE_SERVER"), int(os.environ.get("MQTT_REMOTE_PORT")), 60)
+        except ConnectionRefusedError:
+            print("no connection to remote MQTT Server")
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
 

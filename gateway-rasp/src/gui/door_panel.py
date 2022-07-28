@@ -1,7 +1,8 @@
 from kivy.uix.screenmanager import Screen
+from kivymd.uix.screen import MDScreen
 
 
-class DoorsPanel(Screen):
+class DoorsPanel(MDScreen):
 
     def toggle(self):
         pass

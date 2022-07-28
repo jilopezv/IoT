@@ -1,7 +1,7 @@
-from kivy.uix.screenmanager import Screen
+from kivymd.uix.screen import MDScreen
 
 
-class CameraPanel(Screen):
+class CameraPanel(MDScreen):
 
     def toggle(self):
         pass

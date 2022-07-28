@@ -13,11 +13,17 @@ class ThingsInbound:
             client : paho.mqtt.client
                 MQTT client
         """
+
     def __init__(self, ref_home):
         self.client = mqttc.Client()
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
-        self.client.connect(os.environ.get("MQTT_LOCAL_SERVER"), int(os.environ.get('MQTT_LOCAL_PORT')), 60)
+
+        try:
+            self.client.connect(os.environ.get("MQTT_LOCAL_SERVER"), int(os.environ.get('MQTT_LOCAL_PORT')), 60)
+        except ConnectionRefusedError:
+            print("no connection to local MQTT Server")
+
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
 
