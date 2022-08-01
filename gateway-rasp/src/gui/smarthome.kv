@@ -93,10 +93,13 @@
             Label:
                 text: 'Light'
                 size: self.texture_size
+                
 
             MDFillRoundFlatIconButton:
                 icon: "lightbulb"
                 text: "Primary"
+                on_press: root.toggleLight()
+                
 
             Label:
                 text: 'Temperature:'

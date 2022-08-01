@@ -8,7 +8,8 @@ class RoomPanel(MDScreen):
         self.container = container
 
     def toggleLight(self):
-        self.container.home.send_msg_to_device("0", "TOGGLE")
+        # Send code 2 for toggle the light device (id=0)
+        self.container.home.send_msg_to_device("0", "2")
 
     def showControlPanel(self):
         self.manager.transition.direction = 'left'

@@ -66,12 +66,12 @@ class Home(EventDispatcher):
 
     def send_msg_to_device(self, dev_id, message):
         target_device = self.devices.get(dev_id, None)
-        print('va a mandar', target_device.connectionState)
+        print('va a mandar', target_device.connectionStatus)
 
         if target_device is None:
             # TODO: Notify caller that device id is not found
             raise AssertionError
-        if target_device.connectionState == device.Device.ONLINE_STATE:
+        if target_device.connectionStatus == device.Device.ONLINE_STATE:
             # TODO: check with target_device whether message is valid or not
             Things_Outbound.send_message(f"{target_device.get_topic()}", message)
 
@@ -124,9 +124,9 @@ class Home(EventDispatcher):
         print("new lookout state to " + format(self.lookout))
         Server_Outbound.send_status(format(self.lookout))
         if self.lookout:
-            Things_Outbound.send_message("pir_conf", "1")
+            Things_Outbound.send_message("Movement/3", "1")
         else:
-            Things_Outbound.send_message("pir_conf", "0")
+            Things_Outbound.send_message("Movement/3", "0")
         return self.lookout
 
     def get_lookout(self):

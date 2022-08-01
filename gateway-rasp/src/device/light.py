@@ -9,12 +9,13 @@ class Light(device.Device):
     TOPIC_PREFIX = "Light"
     TOGGLE_CODE = "2"
 
-    def __init__(self, id, state, connectionState, name, home):
-        super().__init__(id, state, connectionState, name, home)
+    def __init__(self, id, state, connectionStatus, name, home):
+        super().__init__(id, state, connectionStatus, name, home)
+        self.home=home
 
     def process_external_msg(self, message):
         print(message)
-        if self.connectionState == "ONLINE":
+        if self.connectionStatus == "ONLINE":
             if message == "TOGGLE":
                 Things_Outbound.send_message(self.get_topic(), self.TOGGLE_CODE)
             else:
