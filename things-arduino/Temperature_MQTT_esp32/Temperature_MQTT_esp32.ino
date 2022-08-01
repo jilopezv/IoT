@@ -66,17 +66,28 @@ void loop() {
   HandleMqtt();
 
   // Send temperature value to the MQTT server
-  snprintf (msg, 50, "%.2f", temperatureC);
+  // Device ID for temperature : 2
+  snprintf (msg, 50, "2,%.2f", temperatureC);
   Serial.print("Publish message: ");
   Serial.println(msg);
-  PublisMqttString("casa/tmp", msg);
+  PublisMqttString("home", msg);
 
+
+  //Process for sending Keep Alive messages
   counter_KA++;
   if(counter_KA == 10){
     counter_KA = 0;
-    // DeviceID,ONLINE_STATE
+    /* Since this ESP32 implemented two devices Light(id = 0) and
+    *  temperature (id = 2), this node must send two KA messages
+    */
+    // DeviceID=0,ONLINE_STATE
     snprintf (msg, 50, "0,100" );
-    Serial.print("Sending keep alive message to Rpi: ");
+    Serial.print("Sending Light keep alive message to Rpi: ");
+    Serial.println(msg);
+    PublisMqttString("home", msg);
+    // DeviceID,ONLINE_STATE
+    snprintf (msg, 50, "2,100" );
+    Serial.print("Sending Temp keep alive message to Rpi: ");
     Serial.println(msg);
     PublisMqttString("home", msg);
   }
