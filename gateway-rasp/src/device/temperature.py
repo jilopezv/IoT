@@ -22,8 +22,8 @@ class Temperature(device.Device):
         if changed_state:
             print("temperature.py: updating current_temperature ")
             self.current_temperature = float(payload)
-            print("temp: ", current_temperature)
-            self.home.send_msg_to_server(payload)
+            print("temp: ", self.current_temperature)
+            # self.home.send_msg_to_server(payload)
             self.clean_count()           
 
     def get_topic(self):

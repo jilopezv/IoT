@@ -40,7 +40,7 @@ class Device(ABC):
 
     def process_internal_msg(self, payload):
         print('PAYLOAD', payload)
-        self.connectionState = self.ONLINE_STATE
+        self.connectionStatus = self.ONLINE_STATE
         # TODO: create mechanism to set connectionState to "OFFLINE"
         #  when no message has been received during a given time
         self._process_internal_msg_on_device(payload)
