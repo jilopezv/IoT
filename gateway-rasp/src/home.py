@@ -109,7 +109,7 @@ class Home(EventDispatcher):
         print('se prepara para enviar mensaje al server')
         # TODO: send alive message to server
         self.send_msg_to_server(msg)
-        raise NotImplementedError
+        #raise NotImplementedError
 
     def toggle_lookout(self):
         """ This is the toggle_lookout function

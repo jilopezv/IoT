@@ -3,6 +3,7 @@ from device.base import device
 
 class Temperature(device.Device):
 
+    current_temperature = 0.0;
     topic_prefix = "Temp"
 
     def __init__(self, id, state, connectionState, name, home):
@@ -19,8 +20,11 @@ class Temperature(device.Device):
         # if change then home should send data
         # raise NotImplementedError
         if changed_state:
+            print("temperature.py: updating current_temperature ")
+            self.current_temperature = float(payload)
+            print("temp: ", current_temperature)
             self.home.send_msg_to_server(payload)
-            self.clean_count()
+            self.clean_count()           
 
     def get_topic(self):
         return f"{self.topic_prefix}/{self.id}"

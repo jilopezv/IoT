@@ -44,6 +44,8 @@ void setup() {
 
 }
 
+//Counter for sending keep alive message each 5 seconds
+int counter_KA = 0;
 
 char msg[50];
 
@@ -64,10 +66,20 @@ void loop() {
   HandleMqtt();
 
   // Send temperature value to the MQTT server
-  snprintf (msg, 75, "%.2f", temperatureC);
+  snprintf (msg, 50, "%.2f", temperatureC);
   Serial.print("Publish message: ");
   Serial.println(msg);
   PublisMqttString("casa/tmp", msg);
+
+  counter_KA++;
+  if(counter_KA == 10){
+    counter_KA = 0;
+    // DeviceID,ONLINE_STATE
+    snprintf (msg, 50, "0,100" );
+    Serial.print("Sending keep alive message to Rpi: ");
+    Serial.println(msg);
+    PublisMqttString("home", msg);
+  }
 
   // Read temperature each 5 seconds
   delay(500);
