@@ -5,10 +5,8 @@
     canvas:
         Color:
             rgba: hex('#fff')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    MDBoxLayout:
+
+    BoxLayout:
         spacing: dp(10)
         padding: dp(20)
         orientation: 'vertical'
@@ -19,24 +17,32 @@
             font_color: 1, 0, 0, 1
             halign: "center"
 
-
         MDGridLayout:
             cols: 2
-            spacing: 10
+            spacing: dp(5)
 
             MDFillRoundFlatIconButton:
                 icon: "sofa"
-                text: "Living room"
+                text: "Living Room"
+                icon_size: "60dp"
+                font_size: "40dp"
+            	width: self.parent.width/2
                 on_press: root.showRoomPanel()
 
             MDFillRoundFlatIconButton:
                 icon: "fridge"
                 text: "Kitchen"
+                icon_size: "60dp"
+                font_size: "40dp"
+                width: self.parent.width/2
                 on_press: root.showRoomPanel()
 
             MDFillRoundFlatIconButton:
                 icon: "bed"
                 text: "Bedroom"
+                icon_size: "60dp"
+                font_size: "40dp"
+                width: self.parent.width/2
                 on_press: root.showRoomPanel()
 
         MDGridLayout:
@@ -55,80 +61,67 @@
 
             MDIconButton:
                 icon: root.home_status
-                user_font_size : "48sp"
+                icon_size: "60dp"
                 on_press: root.toggle_lookout()
 
 <RoomPanel>:
     canvas:
         Color:
-            rgba: hex('#6699CC')
+            rgba: hex('#fff')
         Rectangle:
             pos: self.pos
             size: self.size
+
     MDBoxLayout:
-        padding: 20
         spacing: 20
         orientation: "vertical"
 
-        MDGridLayout:
-            cols: 2
-            spacing: dp(5)
+        MDTopAppBar:
+            title: "Living Room"
+            left_action_items: [["sofa"]]
+            right_action_items: [["home", lambda x: root.show_control_panel()]]
+
+        MDBoxLayout:
+            orientation: "horizontal"
+            spacing: dp(50)
+            padding: dp(90)
+
             MDLabel:
-                text: 'LIVING ROOM'
-                font_style: "H4"
+                text: 'Light:'
                 font_color: 1, 0, 0, 1
-                halign: "center"
-
-            MDFillRoundFlatIconButton:
-                icon: "view-dashboard"
-                text: "Back"
-                on_press: root.showControlPanel()
-
-
-
-        MDGridLayout:
-            cols: 2
-            spacing: dp(5)
-
-            Label:
-                text: 'Light'
                 size: self.texture_size
-                
+
 
             MDFillRoundFlatIconButton:
                 icon: "lightbulb"
                 text: "Primary"
-                on_press: root.toggleLight()
-                
+                icon_color: root.light_color
+                on_press: root.toggle_light()
 
-            Label:
+            MDLabel:
                 text: 'Temperature:'
+                font_color: 1, 0, 0, 1
                 size: self.texture_size
 
             MDFillRoundFlatIconButton:
                 icon: "thermometer"
-                text: "Primary"
+                text: root.tmp_value
 
-            Label:
+            MDLabel:
                 text: 'Movement:'
+                font_color: 1, 0, 0, 1
                 size: self.texture_size
 
             MDFillRoundFlatIconButton:
-                icon: "motion-sensor"
-                text: "Primary"
+                icon: root.mov_icon
+                text: root.mov_text
 
         AnchorLayout:
             anchor_x: "right"
+            padding: dp(60)
+
             MDFillRoundFlatIconButton:
                 icon: "cctv"
                 text: "Cam"
-
-
-
-
-
-
-
-
-
+                on_press: root.toggle_camera()
 

@@ -1,11 +1,20 @@
+from kivy import Config
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
 
 from gui.control_panel import ControlPanel
 from gui.room_panel import RoomPanel
 
+Config.set('graphics', 'resizable', '0')
+# fix the width of the window
+Config.set('graphics', 'width', '1024')
 
-class SmartHome(MDApp):  # el archivo kv debe llamarse igual
+# fix the height of the window
+Config.set('graphics', 'height', '600')
+Config.write()
+
+
+class SmartHome(MDApp):  # kv file must be named the same
     sm = ScreenManager()
 
     def __init__(self, home, **kwargs):

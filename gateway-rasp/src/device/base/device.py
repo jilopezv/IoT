@@ -1,12 +1,14 @@
 from abc import ABC, abstractmethod
 
+from kivy.event import EventDispatcher
+from kivy.properties import StringProperty
+
 import home
-import logging
 
 
 # from things_comm.things_outbound import send_message
 
-class Device(ABC):
+class Device(ABC, EventDispatcher):
     """ Class Device
         Attributes:    
     """
@@ -15,10 +17,12 @@ class Device(ABC):
     OFFLINE_STATE = "-100"
     UNKNOWN = "-1"
 
-    def __init__(self, id, state, connectionStatus, name, ref_home):
+    state = StringProperty("0")
+
+    def __init__(self, id, state, connection_status, name, ref_home):
         self.id = id
         self.state = state
-        self.connectionStatus = connectionStatus
+        self.connection_status = connection_status
         self.name = name
         assert isinstance(ref_home, home.Home)
         self.my_home = ref_home
@@ -40,7 +44,7 @@ class Device(ABC):
 
     def process_internal_msg(self, payload):
         print('PAYLOAD', payload)
-        self.connectionStatus = self.ONLINE_STATE
+        self.connection_status = self.ONLINE_STATE
         # TODO: create mechanism to set connectionState to "OFFLINE"
         #  when no message has been received during a given time
         self._process_internal_msg_on_device(payload)
@@ -56,9 +60,9 @@ class Device(ABC):
         pass
 
     def eval_state_to_report(self):
-        print('Evalúa estado para reportar al servidor')
+        print('Eval status to report to server')
         self.msg_count += 1
-        # TODO: change explicit number 5 to a constant variable
+        # TODO: change explicit number 5 to a constant
         if self.msg_count == 5:
             self.my_home.send_alive_msg(id)
             self.msg_count = 0

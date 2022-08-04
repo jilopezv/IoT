@@ -8,7 +8,6 @@ from device.base import device
 from server_comm.server_outbound import Server_Outbound
 # TODO: analyze which methods must be synchronized
 from things_comm.things_outbound import Things_Outbound
-import paho.mqtt.publish as publish
 
 
 class Home(EventDispatcher):
@@ -26,10 +25,11 @@ class Home(EventDispatcher):
 
     lookout = BooleanProperty(False)
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ home constructor
         set initial state in Home class.
         """
+        super().__init__(*args, **kwargs)
         print("New Home created")
         self.light = False
         self.flag = True
@@ -41,8 +41,10 @@ class Home(EventDispatcher):
         # TODO: implement by consuming a REST service
         lv_light = light.Light(0, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room light", self)
         lv_cam = camera.Camera(1, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room camera", self)
-        lv_tmp = temperature.Temperature(2, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room temperature sensor", self)
-        lv_mov = movement.Movement(3, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room PIR sensor", self)
+        lv_tmp = temperature.Temperature(2, device.Device.UNKNOWN, device.Device.OFFLINE_STATE,
+                                         "living room temperature sensor", self)
+        lv_mov = movement.Movement(3, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room PIR sensor",
+                                   self)
         devices = {
             "0": lv_light,
             "1": lv_cam,
@@ -50,6 +52,9 @@ class Home(EventDispatcher):
             "3": lv_mov
         }
         return devices
+
+    def get_device_by_id(self, id):
+        return self.devices.get(id)
 
     def process_msg_from_device(self, payload):
         print(payload)
@@ -66,12 +71,12 @@ class Home(EventDispatcher):
 
     def send_msg_to_device(self, dev_id, message):
         target_device = self.devices.get(dev_id, None)
-        print('va a mandar', target_device.connectionStatus)
+        print('trying to send: ', target_device.connection_status)
 
         if target_device is None:
             # TODO: Notify caller that device id is not found
             raise AssertionError
-        if target_device.connectionStatus == device.Device.ONLINE_STATE:
+        if target_device.connection_status == device.Device.ONLINE_STATE:
             # TODO: check with target_device whether message is valid or not
             Things_Outbound.send_message(f"{target_device.get_topic()}", message)
 
@@ -109,7 +114,7 @@ class Home(EventDispatcher):
         print('se prepara para enviar mensaje al server')
         # TODO: send alive message to server
         self.send_msg_to_server(msg)
-        #raise NotImplementedError
+        # raise NotImplementedError
 
     def toggle_lookout(self):
         """ This is the toggle_lookout function
@@ -150,7 +155,3 @@ class Home(EventDispatcher):
         info = payload.split(",")
         # TODO: check whether the list the right size (must be 2)
         return info
-
-
-#home = Home()
-#home.process_msg_from_device(0, "hello")

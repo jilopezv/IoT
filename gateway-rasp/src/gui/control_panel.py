@@ -2,7 +2,7 @@ from time import strftime
 
 from kivy.base import EventLoop
 from kivy.clock import Clock
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 
 

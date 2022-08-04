@@ -1,7 +1,6 @@
 import os
 
 import paho.mqtt.publish as publish
-from things_comm.constant import *
 
 
 class Things_Outbound:
