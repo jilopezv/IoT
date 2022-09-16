@@ -3,13 +3,12 @@ package co.edu.udea.iot.backend.controller;
 import co.edu.udea.iot.backend.model.Device;
 import co.edu.udea.iot.backend.service.DeviceService;
 import co.edu.udea.iot.backend.service.HomeService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,18 +16,38 @@ import java.util.List;
 @RequestMapping("api/devices")
 public class DeviceController {
 
-    @Autowired
-    private HomeService homeService;
+    private final HomeService homeService;
 
-    @ApiOperation(value = "View a list of available devices", response = List.class)
+    private final DeviceService deviceService;
+
+    public DeviceController(HomeService homeService, DeviceService deviceService) {
+        this.homeService = homeService;
+        this.deviceService = deviceService;
+    }
+
+    @Operation(description = "View a list of available devices")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved list"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
+                    content = @Content(schema = @Schema(implementation = Device.class))),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found")
     })
-    @GetMapping()
+    @GetMapping
     public List<Device> getAllDevices() {
         return homeService.findAllDevices();
+    }
+
+    @Operation(description = "Register a new Device")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Device successfully registered",
+                    content = @Content(schema = @Schema(implementation = Device.class))),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found")
+    })
+    @PostMapping
+    public Device saveDevice(@RequestBody Device device) {
+        return deviceService.saveDevice(device);
     }
 }

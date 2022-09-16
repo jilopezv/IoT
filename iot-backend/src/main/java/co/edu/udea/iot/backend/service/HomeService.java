@@ -1,6 +1,5 @@
 package co.edu.udea.iot.backend.service;
 
-import co.edu.udea.iot.backend.broker.IotSender;
 import co.edu.udea.iot.backend.model.Device;
 import co.edu.udea.iot.backend.model.Home;
 import co.edu.udea.iot.backend.model.Message;
@@ -20,10 +19,8 @@ public class HomeService {
 
     private DeviceRepository deviceRepository;
 
-    private IotSender iotSender;
 
-    public HomeService(IotSender iotSender, HomeRepository homeRepository, DeviceRepository deviceRepository) {
-        this.iotSender = iotSender;
+    public HomeService(HomeRepository homeRepository, DeviceRepository deviceRepository) {
         this.homeRepository = homeRepository;
         this.deviceRepository = deviceRepository;
     }
@@ -51,7 +48,6 @@ public class HomeService {
 
         StringBuilder sb = new StringBuilder();
         messages.forEach(message -> sb.append(message.getDeviceName()).append(",").append(message.getPayload()));
-        iotSender.send(homeName + "_inbound", sb.toString().getBytes());
     }
 
 

@@ -2,27 +2,20 @@
 spring:
   jpa:
     show-sql: false
-    properties:
-      hibernate:
-        default_schema: public
-        ddl-auto: update
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          lob:
-            non_contextual_creation: true
+    hibernate:
+      default_schema: public
+      ddl-auto: none
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      jdbc:
+        lob:
+          non_contextual_creation: true
     generate-ddl: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/IOT
+    url: jdbc:postgresql://localhost:5130/iot
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
+    password: 0ct4ld4t4b4s3*!=+++@
     hikari:
       idle-timeout: 10000
       maximum-pool-size: 5
-  #este usuario debe crearse en la página de administración del broker
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: iotbroker
-    password: iotbroker

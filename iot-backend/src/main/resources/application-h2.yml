@@ -1,0 +1,22 @@
+# Datasource configuration in dev environment
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:mem:iot-testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+    hikari:
+      idle-timeout: 10000
+      maximum-pool-size: 5
+
+  h2:
+    console:
+      enabled: true
+
+
