@@ -41,4 +41,16 @@ public class HomeController {
         homeService.sendMessage(homeName, deviceName, message);
     }
 
+    @Operation(description = "Send a test message to a home")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully message sent"),
+            @ApiResponse(responseCode = "401", description = "You are not authorized to view the resource"),
+            @ApiResponse(responseCode = "403", description = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(responseCode = "404", description = "The resource you were trying to reach is not found")
+    })
+    @PostMapping("/messages")
+    public void sendMessageToHome(@RequestParam String message) {
+        homeService.sendMessage(message);
+    }
+
 }
