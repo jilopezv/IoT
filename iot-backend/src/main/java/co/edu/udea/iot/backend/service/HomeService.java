@@ -1,6 +1,7 @@
 package co.edu.udea.iot.backend.service;
 
-import co.edu.udea.iot.backend.broker.HomePublisher;
+import co.edu.udea.iot.backend.broker.HomeBroker;
+import co.edu.udea.iot.backend.broker.webclient.WebPublisher;
 import co.edu.udea.iot.backend.model.Device;
 import co.edu.udea.iot.backend.model.Home;
 import co.edu.udea.iot.backend.model.Message;
@@ -21,13 +22,13 @@ public class HomeService {
 
     private DeviceRepository deviceRepository;
 
-    private final HomePublisher homePublisher;
+    private final HomeBroker broker;
 
 
-    public HomeService(HomeRepository homeRepository, DeviceRepository deviceRepository, HomePublisher homePublisher) {
+    public HomeService(HomeRepository homeRepository, DeviceRepository deviceRepository, HomeBroker broker) {
         this.homeRepository = homeRepository;
         this.deviceRepository = deviceRepository;
-        this.homePublisher = homePublisher;
+        this.broker = broker;
     }
 
     public List<Home> findAllHomes() {
@@ -111,7 +112,7 @@ public class HomeService {
 
     public void sendMessage(String message) {
         try {
-            this.homePublisher.publish(message);
+            this.broker.publish(message);
         } catch (MqttException e) {
             e.printStackTrace();
         }

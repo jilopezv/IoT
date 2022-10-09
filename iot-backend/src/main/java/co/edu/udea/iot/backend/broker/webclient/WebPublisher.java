@@ -1,4 +1,4 @@
-package co.edu.udea.iot.backend.broker;
+package co.edu.udea.iot.backend.broker.webclient;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class HomePublisher {
+public class WebPublisher {
 
-    private IMqttClient publisher;
+    private final IMqttClient publisher;
 
-    public HomePublisher() throws MqttException {
+    public WebPublisher() throws MqttException {
         String publisherId = UUID.randomUUID().toString();
-        this.publisher = new MqttClient("tcp://localhost:1883",publisherId);
+        this.publisher = new MqttClient("ws://localhost:8000", publisherId);
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
@@ -21,13 +21,13 @@ public class HomePublisher {
     }
 
     public void publish(String message) throws MqttException {
-        if ( !publisher.isConnected()) {
+        if (!publisher.isConnected()) {
             //todo log message client not connected
             return;
         }
         MqttMessage msg = new MqttMessage(message.getBytes());
         msg.setQos(0);
         msg.setRetained(true);
-        publisher.publish("home_inbound",msg);
+        publisher.publish("web_inbound", msg);
     }
 }
