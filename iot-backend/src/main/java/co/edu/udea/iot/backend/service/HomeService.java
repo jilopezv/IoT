@@ -8,6 +8,7 @@ import co.edu.udea.iot.backend.model.Message;
 import co.edu.udea.iot.backend.repository.DeviceRepository;
 import co.edu.udea.iot.backend.repository.HomeRepository;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,11 +25,23 @@ public class HomeService {
 
     private final HomeBroker broker;
 
+    private final WebPublisher  webPublisher;
 
-    public HomeService(HomeRepository homeRepository, DeviceRepository deviceRepository, HomeBroker broker) {
+
+    public HomeService(HomeRepository homeRepository, DeviceRepository deviceRepository, HomeBroker broker, WebPublisher webPublisher) {
         this.homeRepository = homeRepository;
         this.deviceRepository = deviceRepository;
         this.broker = broker;
+        this.webPublisher = webPublisher;
+        try {
+            this.broker.listen("home_outbound", this::processMessageFromHome);
+        } catch (MqttException mqttException) {
+            mqttException.printStackTrace();
+        }
+    }
+
+    private void processMessageFromHome(String topic, MqttMessage message) {
+        System.out.println("Mensaje recibido para manejar con lógica de negocio: "+ message);
     }
 
     public List<Home> findAllHomes() {
@@ -112,7 +125,7 @@ public class HomeService {
 
     public void sendMessage(String message) {
         try {
-            this.broker.publish(message);
+            this.webPublisher.publish(message);
         } catch (MqttException e) {
             e.printStackTrace();
         }
