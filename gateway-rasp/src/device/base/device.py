@@ -64,7 +64,9 @@ class Device(ABC, EventDispatcher):
         self.msg_count += 1
         # TODO: change explicit number 5 to a constant
         if self.msg_count == 5:
-            self.my_home.send_alive_msg(id)
+            msg_dict = {'home_id':self.my_home.HOME_ID, 'dev_id':self.id, 'msg':"ONLINE"}
+            print(msg_dict)
+            self.my_home.send_alive_msg(msg_dict)
             self.msg_count = 0
 
     def clean_count(self):

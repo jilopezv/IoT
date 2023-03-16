@@ -1,4 +1,6 @@
 import subprocess
+import logging
+import json
 
 from kivy.event import EventDispatcher
 from kivy.properties import BooleanProperty
@@ -22,6 +24,7 @@ class Home(EventDispatcher):
     """
     topic_prefix = "home"
     devices = []
+    HOME_ID = 1
 
     lookout = BooleanProperty(False)
 
@@ -57,17 +60,22 @@ class Home(EventDispatcher):
         return self.devices.get(id)
 
     def process_msg_from_device(self, payload):
-        print(payload)
-        info = self.parse_payload(payload)
-        source_device = self.devices.get(info[0], None)
-        if source_device is None:
-            # TODO: Notify server that gateway receives msg from unknown device
-            raise AssertionError
-        source_device.process_internal_msg(info[1])
+        logging.info("#### Home IoT ####: Message from device - payload: %s", payload)
+        try:
+            info = self.parse_payload_2_dict(payload)
+            source_device = self.devices.get(info['dev_id'], None)
+            if source_device is None:
+                # TODO: Notify server that gateway receives msg from unknown device
+                raise AssertionError
+            source_device.process_internal_msg(info['msg'])
+        except Exception as ex:
+            logging.error("#### IoT ####.: "+str(ex))
+
 
     def send_msg_to_server(self, msg):
         # TODO: send message to server
-        Server_Outbound.send_status("try")
+        print(msg)
+        Server_Outbound.send_status(json.dumps(msg))
 
     def send_msg_to_device(self, dev_id, message):
         target_device = self.devices.get(dev_id, None)
@@ -113,6 +121,7 @@ class Home(EventDispatcher):
     def send_alive_msg(self, msg):
         print('se prepara para enviar mensaje al server')
         # TODO: send alive message to server
+        print(msg)
         self.send_msg_to_server(msg)
         # raise NotImplementedError
 
@@ -151,7 +160,12 @@ class Home(EventDispatcher):
         """
         return self.flag
 
-    def parse_payload(self, payload):
+    def parse_payload_2_dict(self, payload):
         info = payload.split(",")
-        # TODO: check whether the list the right size (must be 2)
-        return info
+        if len(info) != 2:
+            raise Exception ("Wrong message structure received")
+            
+        info_dict = {'home_id': self.HOME_ID,  'dev_id':info[0], 'msg':info[1]}
+        #logging.debug("#### IoT ####: "+info.to+" parsed to: "+info_dict)
+        
+        return info_dict
