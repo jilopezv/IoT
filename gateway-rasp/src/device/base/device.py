@@ -66,7 +66,7 @@ class Device(ABC, EventDispatcher):
         if self.msg_count == 5:
             msg_dict = {'home_id':self.my_home.HOME_ID, 'dev_id':self.id, 'msg':"ONLINE"}
             print(msg_dict)
-            self.my_home.send_alive_msg(msg_dict)
+            self.my_home.send_msg_to_server(msg_dict)
             self.msg_count = 0
 
     def clean_count(self):

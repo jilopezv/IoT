@@ -8,7 +8,7 @@ UdeA
 
 ![arquitectura](arquitectura.jpg)
 
-# Pasos (Aun estan incompletos) #
+# Pasos (aún estan incompletos) #
 
 **Aun falta**:
 1. Poner a funcionar y y documentar la parte asociada al servidor de streaming.

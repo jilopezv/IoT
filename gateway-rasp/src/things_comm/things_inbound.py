@@ -1,3 +1,4 @@
+import logging
 import os
 
 import paho.mqtt.client as mqttc
@@ -22,8 +23,8 @@ class ThingsInbound:
 
         try:
             self.client.connect(os.environ.get("MQTT_LOCAL_SERVER"), int(os.environ.get('MQTT_LOCAL_PORT')), 60)
-        except ConnectionRefusedError:
-            print("no connection to local MQTT Server")
+        except Exception as ex:
+            logging.error("#### Home IoT ####: no connection to local MQTT Server"+str(ex))
 
         assert isinstance(ref_home, home.Home)
         self.myHome = ref_home
@@ -45,5 +46,5 @@ class ThingsInbound:
         client.subscribe(MQTT_THINGS_INBOUND_DEFAULT_TOPIC)
 
     def on_message(self, client, userdata, msg):
-        print("InternalComm got a message")
+        logging.info("#### Home IoT ####: InternalComm got a message")
         self.myHome.process_msg_from_device(msg.payload.decode("utf-8"))

@@ -60,22 +60,23 @@ class Home(EventDispatcher):
         return self.devices.get(id)
 
     def process_msg_from_device(self, payload):
-        logging.info("#### Home IoT ####: Message from device - payload: %s", payload)
+        logging.info("#### Home IoT ####: Message from device - payload:" + payload)
         try:
             info = self.parse_payload_2_dict(payload)
             source_device = self.devices.get(info['dev_id'], None)
             if source_device is None:
-                # TODO: Notify server that gateway receives msg from unknown device
-                raise AssertionError
-            source_device.process_internal_msg(info['msg'])
+                msg = self.create_msg(payload)
+                self.send_msg_to_server(msg)
+                #raise AssertionError("Message received from an unknown device")
+            else:
+                source_device.process_internal_msg(info['msg'])
         except Exception as ex:
-            logging.error("#### IoT ####.: "+str(ex))
-
+            logging.error("#### IoT ####: " + str(ex))
 
     def send_msg_to_server(self, msg):
-        # TODO: send message to server
-        print(msg)
-        Server_Outbound.send_status(json.dumps(msg))
+        #TODO: print dict as string for debug
+        logging.debug("#### Home IoT ####: ")
+        Server_Outbound.send_msg(json.dumps(msg))
 
     def send_msg_to_device(self, dev_id, message):
         target_device = self.devices.get(dev_id, None)
@@ -118,12 +119,12 @@ class Home(EventDispatcher):
             self.toggle_light()
         raise NotImplementedError
 
-    def send_alive_msg(self, msg):
-        print('se prepara para enviar mensaje al server')
-        # TODO: send alive message to server
-        print(msg)
-        self.send_msg_to_server(msg)
-        # raise NotImplementedError
+    # def send_alive_msg(self, msg):
+    #    logging.info('#### Home IoT ####: Sending alive message to server')
+    #    # TODO: send alive message to server
+    #    print(msg)
+    #    self.send_msg_to_server(msg)
+    #    # raise NotImplementedError
 
     def toggle_lookout(self):
         """ This is the toggle_lookout function
@@ -163,9 +164,12 @@ class Home(EventDispatcher):
     def parse_payload_2_dict(self, payload):
         info = payload.split(",")
         if len(info) != 2:
-            raise Exception ("Wrong message structure received")
-            
-        info_dict = {'home_id': self.HOME_ID,  'dev_id':info[0], 'msg':info[1]}
-        #logging.debug("#### IoT ####: "+info.to+" parsed to: "+info_dict)
-        
+            raise Exception("Wrong message structure received")
+
+        info_dict = self.create_msg(dev_id=info[0], msg=info[1])
         return info_dict
+
+    def create_msg(self, msg, home_id=None, dev_id='-1'):
+        if home_id is None:
+            home_id = self.HOME_ID
+        return {'home_id': home_id, 'dev_id': dev_id, 'msg': msg}
