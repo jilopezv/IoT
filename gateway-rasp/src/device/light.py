@@ -25,11 +25,13 @@ class Light(device.Device):
             raise NotImplementedError
 
     def _process_internal_msg_on_device(self, payload):
-        print(payload)
-        if payload != device.Device.ONLINE_STATE:
-            if self.state != payload:
-                self.state = payload
-                self.my_home.send_msg_to_server(self.state)
+        #print(payload)
+        new_state = payload["msg"]
+        if new_state != device.Device.ONLINE_STATE:
+            if self.state != new_state:
+                self.state = new_state
+
+                self.my_home.send_msg_to_server(payload)
                 self.clean_count()
 
     def get_topic(self):

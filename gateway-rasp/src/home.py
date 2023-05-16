@@ -69,13 +69,14 @@ class Home(EventDispatcher):
                 self.send_msg_to_server(msg)
                 #raise AssertionError("Message received from an unknown device")
             else:
-                source_device.process_internal_msg(info['msg'])
+                source_device.process_internal_msg(info)
         except Exception as ex:
             logging.error("#### IoT ####: " + str(ex))
 
     def send_msg_to_server(self, msg):
         #TODO: print dict as string for debug
-        logging.debug("#### Home IoT ####: ")
+        logging.info("#### Home IoT ####: ")
+        msg["home_id"] = self.HOME_ID
         Server_Outbound.send_msg(json.dumps(msg))
 
     def send_msg_to_device(self, dev_id, message):
