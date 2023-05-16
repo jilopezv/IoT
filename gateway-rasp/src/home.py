@@ -100,7 +100,11 @@ class Home(EventDispatcher):
         # TODO: Define payload format
         # Depends on device type
 
-        source_device = self.devices.get(id, "invalid")
+        msg_dict = json.load(msg)
+
+        print("msg:" + msg_dict["dev_id"] + " msg: " + msg_dict["msg"])
+
+        """source_device = self.devices.get(id, "invalid")
         if source_device == "invalid":
             # TODO: Notify server that gateway receives msg from unknown device
             raise AssertionError
@@ -119,6 +123,7 @@ class Home(EventDispatcher):
             print("ext: must toggle light")
             self.toggle_light()
         raise NotImplementedError
+        """
 
     # def send_alive_msg(self, msg):
     #    logging.info('#### Home IoT ####: Sending alive message to server')
