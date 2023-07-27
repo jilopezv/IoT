@@ -1,3 +1,4 @@
+import enum
 from abc import ABC, abstractmethod
 
 from kivy.event import EventDispatcher
@@ -13,9 +14,14 @@ class Device(ABC, EventDispatcher):
         Attributes:    
     """
     topic_prefix = ""
-    ONLINE_STATE = "100"
-    OFFLINE_STATE = "-100"
-    UNKNOWN = "-1"
+
+    class Status(enum.Enum):
+        ONLINE_STATE = "100"
+        OFFLINE_STATE = "-100"
+        UNKNOWN = "-1"
+        @classmethod
+        def has_member_key(cls, key):
+            return key in cls.__members__
 
     state = StringProperty("0")
 
@@ -43,8 +49,8 @@ class Device(ABC, EventDispatcher):
     '''
 
     def process_internal_msg(self, payload):
-        #print('PAYLOAD', payload)
-        self.connection_status = self.ONLINE_STATE
+        # print('PAYLOAD', payload)
+        self.connection_status = self.Status.ONLINE_STATE
         # TODO: create mechanism to set connectionState to "OFFLINE"
         #  when no message has been received during a given time
         self._process_internal_msg_on_device(payload)
@@ -64,7 +70,7 @@ class Device(ABC, EventDispatcher):
         self.msg_count += 1
         # TODO: change explicit number 5 to a constant
         if self.msg_count == 5:
-            msg_dict = {'home_id':self.my_home.HOME_ID, 'dev_id':self.id, 'msg':"ONLINE"}
+            msg_dict = {'home_id': self.my_home.HOME_ID, 'dev_id': self.id, 'msg': "ONLINE"}
             print(msg_dict)
             self.my_home.send_msg_to_server(msg_dict)
             self.msg_count = 0

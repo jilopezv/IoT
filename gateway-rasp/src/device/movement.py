@@ -15,7 +15,7 @@ class Movement(device.Device):
         raise NotImplementedError
 
     def _process_internal_msg_on_device(self, payload):
-        if payload != device.Device.ONLINE_STATE:
+        if payload != device.Device.Status.ONLINE_STATE:
             if self.home.lookout:
                 print("alarm")
                 # self.home.send_msg_to_server()

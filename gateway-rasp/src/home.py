@@ -42,11 +42,11 @@ class Home(EventDispatcher):
     def get_devices(self):
         # This structure simulates the initial configuration obtained from a remote server
         # TODO: implement by consuming a REST service
-        lv_light = light.Light(0, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room light", self)
-        lv_cam = camera.Camera(1, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room camera", self)
-        lv_tmp = temperature.Temperature(2, device.Device.UNKNOWN, device.Device.OFFLINE_STATE,
+        lv_light = light.Light(0, str(device.Device.Status.UNKNOWN), device.Device.Status.OFFLINE_STATE, "living room light", self)
+        lv_cam = camera.Camera(1, str(device.Device.Status.UNKNOWN), device.Device.Status.OFFLINE_STATE, "living room camera", self)
+        lv_tmp = temperature.Temperature(2, str(device.Device.Status.UNKNOWN), device.Device.Status.OFFLINE_STATE,
                                          "living room temperature sensor", self)
-        lv_mov = movement.Movement(3, device.Device.UNKNOWN, device.Device.OFFLINE_STATE, "living room PIR sensor",
+        lv_mov = movement.Movement(3, str(device.Device.Status.UNKNOWN), device.Device.Status.OFFLINE_STATE, "living room PIR sensor",
                                    self)
         devices = {
             "0": lv_light,
@@ -67,14 +67,14 @@ class Home(EventDispatcher):
             if source_device is None:
                 msg = self.create_msg(payload)
                 self.send_msg_to_server(msg)
-                #raise AssertionError("Message received from an unknown device")
+                # raise AssertionError("Message received from an unknown device")
             else:
                 source_device.process_internal_msg(info)
         except Exception as ex:
             logging.error("#### IoT ####: " + str(ex))
 
     def send_msg_to_server(self, msg):
-        #TODO: print dict as string for debug
+        # TODO: print dict as string for debug
         logging.info("#### Home IoT ####: ")
         msg["home_id"] = self.HOME_ID
         Server_Outbound.send_msg(json.dumps(msg))
@@ -86,7 +86,7 @@ class Home(EventDispatcher):
         if target_device is None:
             # TODO: Notify caller that device id is not found
             raise AssertionError
-        if target_device.connection_status == device.Device.ONLINE_STATE:
+        if target_device.connection_status == device.Device.Status.ONLINE_STATE:
             # TODO: check with target_device whether message is valid or not
             Things_Outbound.send_message(f"{target_device.get_topic()}", message)
 
@@ -100,9 +100,21 @@ class Home(EventDispatcher):
         # TODO: Define payload format
         # Depends on device type
 
-        msg_dict = json.load(msg)
+        msg_dict = json.loads(msg)
 
         print("msg:" + msg_dict["dev_id"] + " msg: " + msg_dict["msg"])
+
+        try:
+            source_device = self.devices.get(msg_dict['dev_id'], None)
+            if source_device is None:
+                pass
+                # msg = self.create_msg(msg_dict)
+                # self.send_msg_to_server(msg)
+                # raise AssertionError("Message received from an unknown device")
+            else:
+                source_device.process_external_msg(msg_dict["msg"])
+        except Exception as ex:
+            logging.error("#### IoT ####: " + str(ex))
 
         """source_device = self.devices.get(id, "invalid")
         if source_device == "invalid":

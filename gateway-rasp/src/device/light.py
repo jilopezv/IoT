@@ -1,12 +1,24 @@
+import enum
+
 from device.base import device
 
 # TOGGLE_LIGHT_MESSAGE = 2
 from things_comm.things_outbound import Things_Outbound
 
 
+
+
 class Light(device.Device):
     TOPIC_PREFIX = "Light"
-    TOGGLE_CODE = "2"
+
+    class LightStates(enum.Enum):
+        TOGGLE_CODE = "2"
+        OFF_CODE = "0"
+        ON_CODE = "1"
+
+        @classmethod
+        def has_member_key(cls, key):
+            return key in cls.__members__
 
     def __init__(self, id, state, connection_status, name, home):
         super().__init__(id, state, connection_status, name, home)
@@ -14,9 +26,10 @@ class Light(device.Device):
 
     def process_external_msg(self, message):
         print(message)
-        if self.connection_status == "ONLINE":
-            if message == "TOGGLE":
-                Things_Outbound.send_message(self.get_topic(), self.TOGGLE_CODE)
+        values = [member.value for member in self.LightStates]
+        if self.state == device.Device.Status.ONLINE_STATE.value:
+            if message in values:
+                Things_Outbound.send_message(self.get_topic(), message)
             else:
                 # TODO: send error message "invalid message"
                 raise NotImplementedError
@@ -25,9 +38,9 @@ class Light(device.Device):
             raise NotImplementedError
 
     def _process_internal_msg_on_device(self, payload):
-        #print(payload)
+        # print(payload)
         new_state = payload["msg"]
-        if new_state != device.Device.ONLINE_STATE:
+        if new_state != device.Device.Status.ONLINE_STATE:
             if self.state != new_state:
                 self.state = new_state
 
