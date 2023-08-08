@@ -15,17 +15,17 @@ class Movement(device.Device):
         raise NotImplementedError
 
     def _process_internal_msg_on_device(self, payload):
-        if payload != device.Device.Status.ONLINE_STATE:
-            if self.home.lookout:
-                print("alarm")
-                # self.home.send_msg_to_server()
-                self.clean_count()
-            else:
-                print("movement detected")
-                self.movement_detected = True
-                # TODO: evaluate further actions regarding home functionality (for next versions: rooms, auto mode)
+        new_state = payload["msg"]
+        if self.home.lookout:
+            print("alarm")
+            # self.home.send_msg_to_server()
+            self.clean_count()
         else:
-            self.movement_detected = False
+            print("movement detected")
+            if new_state == '1':
+                self.movement_detected = True
+            else:
+                self.movement_detected = False
 
     def get_topic(self):
         return f"{self.topic_prefix}/{self.id}"

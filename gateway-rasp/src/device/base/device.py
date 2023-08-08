@@ -53,9 +53,12 @@ class Device(ABC, EventDispatcher):
         self.connection_status = self.Status.ONLINE_STATE
         # TODO: create mechanism to set connectionState to "OFFLINE"
         #  when no message has been received during a given time
-        self._process_internal_msg_on_device(payload)
+
+        new_state = payload["msg"]
+        if new_state != self.Status.ONLINE_STATE.value:
+            self._process_internal_msg_on_device(payload)
         self.eval_state_to_report()
-        pass
+
 
     @abstractmethod
     def _process_internal_msg_on_device(self, parameter_list):

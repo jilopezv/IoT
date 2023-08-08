@@ -5,6 +5,7 @@ from kivymd.uix.screen import MDScreen
 class RoomPanel(MDScreen):
     light_color = StringProperty("red")
     tmp_value = StringProperty("-")
+    noise_value = StringProperty("-")
     mov_icon = StringProperty("motion-sensor-off")
     mov_text = StringProperty("No detection")
 
@@ -14,8 +15,10 @@ class RoomPanel(MDScreen):
         self.light = container.home.get_device_by_id("0")
         self.tmp = container.home.get_device_by_id("2")
         self.mov = container.home.get_device_by_id("3")
+        self.noise = container.home.get_device_by_id("4")
         self.light.bind(state=self.update_light_color)
         self.tmp.bind(current_temperature=self.update_temperature)
+        self.noise.bind(current_noise=self.update_noise)
         self.mov.bind(movement_detected=self.update_movement)
 
     def toggle_light(self):
@@ -32,6 +35,10 @@ class RoomPanel(MDScreen):
     def update_temperature(self, *args):
         value = args[1]
         self.tmp_value = str(value)
+
+    def update_noise(self, *args):
+        value = args[1]
+        self.noise_value = str(value)
 
     def update_movement(self, *args):
         detected = args[1]

@@ -5,7 +5,7 @@ import json
 from kivy.event import EventDispatcher
 from kivy.properties import BooleanProperty
 
-from device import movement, light, temperature, camera
+from device import movement, light, temperature, camera, noise
 from device.base import device
 from server_comm.server_outbound import Server_Outbound
 # TODO: analyze which methods must be synchronized
@@ -48,11 +48,14 @@ class Home(EventDispatcher):
                                          "living room temperature sensor", self)
         lv_mov = movement.Movement(3, str(device.Device.Status.UNKNOWN), device.Device.Status.OFFLINE_STATE, "living room PIR sensor",
                                    self)
+        lv_noise = noise.Noise(4, str(device.Device.Status.UNKNOWN), device.Device.Status.OFFLINE_STATE,
+                                         "living room noise sensor", self)
         devices = {
             "0": lv_light,
             "1": lv_cam,
             "2": lv_tmp,
-            "3": lv_mov
+            "3": lv_mov,
+            "4": lv_noise
         }
         return devices
 

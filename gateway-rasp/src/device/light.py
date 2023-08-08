@@ -6,8 +6,6 @@ from device.base import device
 from things_comm.things_outbound import Things_Outbound
 
 
-
-
 class Light(device.Device):
     TOPIC_PREFIX = "Light"
 
@@ -40,12 +38,10 @@ class Light(device.Device):
     def _process_internal_msg_on_device(self, payload):
         # print(payload)
         new_state = payload["msg"]
-        if new_state != device.Device.Status.ONLINE_STATE:
-            if self.state != new_state:
-                self.state = new_state
-
-                self.my_home.send_msg_to_server(payload)
-                self.clean_count()
+        if self.state != new_state:
+            self.state = new_state
+            self.my_home.send_msg_to_server(payload)
+            self.clean_count()
 
     def get_topic(self):
         return f"{self.TOPIC_PREFIX}/{self.id}"
